@@ -27,7 +27,7 @@
     "@myrotvorets/oav-installer": "^2.2.1",
     "@myrotvorets/opentelemetry-configurator": "^2.0.1",
     "@myrotvorets/opentelemetry-plugin-knex": "^0.6.0",
-    "@opentelemetry/instrumentation-express": "^0.23.0",
+    "@opentelemetry/instrumentation-express": "^0.24.0",
     "envalid": "^7.0.0",
     "express": "^4.17.1",
     "express-openapi-validator": "^4.10.11",
