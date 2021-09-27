@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import Knex from 'knex';
+import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
     const exists: boolean = await knex.schema.hasTable('criminals');

@@ -1,5 +1,5 @@
 import express from 'express';
-import knex from 'knex';
+import { Knex, knex } from 'knex';
 import { Model } from 'objection';
 import { join } from 'path';
 import { installOpenApiValidator } from '@myrotvorets/oav-installer';
@@ -41,7 +41,7 @@ export function setupApp(): express.Express {
 }
 
 /* istanbul ignore next */
-function setupKnex(): knex {
+function setupKnex(): Knex {
     const db = knex(buildKnexConfig());
     Model.knex(db);
     return db;

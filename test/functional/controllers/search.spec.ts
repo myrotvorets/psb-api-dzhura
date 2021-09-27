@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import knex from 'knex';
+import { Knex, knex } from 'knex';
 import mockKnex from 'mock-knex';
 import { Model } from 'objection';
 import { buildKnexConfig } from '../../../src/knexfile';
@@ -9,7 +9,7 @@ import { attachmentResponse, criminalResponse } from '../../fixtures/queryrespon
 import { resultItems } from '../../fixtures/results';
 
 let app: express.Express;
-let db: knex;
+let db: Knex;
 
 async function buildApp(): Promise<express.Express> {
     const application = express();

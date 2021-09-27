@@ -1,12 +1,12 @@
 import express from 'express';
 import request from 'supertest';
-import knex from 'knex';
+import { Knex, knex } from 'knex';
 import mockKnex from 'mock-knex';
 import { buildKnexConfig } from '../../../src/knexfile';
 import monitoringController, { healthChecker } from '../../../src/controllers/monitoring';
 
 let app: express.Express;
-let db: knex;
+let db: Knex;
 
 function buildApp(): express.Express {
     const application = express();

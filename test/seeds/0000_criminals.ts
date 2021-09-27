@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import * as Knex from 'knex';
+import { Knex } from 'knex';
 
 const seedData = [
     {
