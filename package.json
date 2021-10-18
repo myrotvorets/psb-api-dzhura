@@ -47,7 +47,7 @@
     "@types/node": "^16.4.0",
     "@types/supertest": "^2.0.10",
     "eslint-formatter-gha": "^1.2.0",
-    "eslint-plugin-jest": "^25.0.5",
+    "eslint-plugin-jest": "^25.2.2",
     "jest": "^27.0.1",
     "jest-github-actions-reporter": "^1.0.3",
     "jest-sonar-reporter": "^2.0.0",
