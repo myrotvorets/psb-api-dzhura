@@ -44,7 +44,7 @@
     "@types/mock-knex": "^0.4.3",
     "@types/morgan": "^1.9.2",
     "@types/multer": "^1.4.5",
-    "@types/node": "^16.4.0",
+    "@types/node": "^16.11.1",
     "@types/supertest": "^2.0.10",
     "eslint-formatter-gha": "^1.2.0",
     "eslint-plugin-jest": "^25.0.5",
