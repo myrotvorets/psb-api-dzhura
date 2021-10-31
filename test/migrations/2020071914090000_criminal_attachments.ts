@@ -21,7 +21,7 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
     if (process.env.NODE_ENV !== 'test') {
-        throw new Error(`Refusing to run this in ${process.env.NODE_ENV} environment`);
+        throw new Error(`Refusing to run this in the ${process.env.NODE_ENV} environment`);
     }
 
     await knex.schema.dropTableIfExists('criminal_attachments');

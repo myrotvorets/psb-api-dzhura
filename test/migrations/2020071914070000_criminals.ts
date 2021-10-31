@@ -25,15 +25,15 @@ export async function up(knex: Knex): Promise<void> {
             table.index(['last_modified'], 'idx_criminals_last_modified');
             table.index(['country', 'active'], 'idx_criminals_country');
             table.index([knex.raw('address(255)'), 'active'], 'idx_criminals_address');
-            table.index(['description'], 'idx_criminals_description', 'FULLTEXT');
-            table.index(['sname'], 'idx_criminals_sname', 'FULLTEXT');
+            table.index(['description'], 'idx_criminals_description', { indexType: 'FULLTEXT' });
+            table.index(['sname'], 'idx_criminals_sname', { indexType: 'FULLTEXT' });
         });
     }
 }
 
 export async function down(knex: Knex): Promise<void> {
     if (process.env.NODE_ENV !== 'test') {
-        throw new Error(`Refusing to run this in ${process.env.NODE_ENV} environment`);
+        throw new Error(`Refusing to run this in the ${process.env.NODE_ENV} environment`);
     }
 
     await knex.schema.dropTableIfExists('criminals');
