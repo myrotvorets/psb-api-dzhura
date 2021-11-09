@@ -34,7 +34,7 @@
     "knex": "^0.95.11",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
-    "objection": "^3.0.0-alpha.4",
+    "objection": "^3.0.0",
     "wpautop": "^1.0.0"
   },
   "devDependencies": {
