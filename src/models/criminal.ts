@@ -12,10 +12,8 @@ export default class Criminal extends Model {
 
     public static tableName = 'criminals';
 
-    // eslint-disable-next-line no-use-before-define
-    public static modifiers: Modifiers<QueryBuilder<Criminal>> = {
+    public static modifiers: Modifiers<QueryBuilder<Model>> = {
         searchByName(builder, s: string, n: number): void {
-            // eslint-disable-next-line no-void
             void builder
                 .where('active', 1)
                 .andWhereRaw('MATCH (sname) AGAINST (? IN BOOLEAN MODE)', s)
