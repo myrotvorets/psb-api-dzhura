@@ -8,6 +8,7 @@ export default class CriminalAttachment extends Model {
 
     public static tableName = 'criminal_attachments';
 
+    // eslint-disable-next-line no-use-before-define
     public static modifiers: Modifiers<QueryBuilder<CriminalAttachment>> = {
         findByIds(builder, ids: number[]): void {
             // eslint-disable-next-line no-void

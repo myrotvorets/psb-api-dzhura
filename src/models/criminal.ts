@@ -12,6 +12,7 @@ export default class Criminal extends Model {
 
     public static tableName = 'criminals';
 
+    // eslint-disable-next-line no-use-before-define
     public static modifiers: Modifiers<QueryBuilder<Criminal>> = {
         searchByName(builder, s: string, n: number): void {
             // eslint-disable-next-line no-void
