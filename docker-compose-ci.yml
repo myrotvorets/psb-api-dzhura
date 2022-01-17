@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   dzhura:
-    image: node:current-alpine
+    image: node:current-alpine@sha256:7ef8e673a9ea7b1dfaae292bf8faf549bb81ba60f68087454cef143698bdf2c4
     read_only: true
     volumes:
       - ".:/usr/src/service"
@@ -21,7 +21,7 @@ services:
       - mysql
 
   mysql:
-    image: mariadb:latest
+    image: mariadb:latest@sha256:5a37e65a6414d78f60d523c4ddcf93d715854337beb46f8beeb1a23d83262184
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: test
@@ -30,7 +30,7 @@ services:
       MYSQL_INITDB_SKIP_TZINFO: "1"
 
   gauntlt:
-    image: gauntlt/gauntlt
+    image: gauntlt/gauntlt@sha256:bd70c0015b6c9d0d7ea3fa00a71864f6c344365fff13110b96e6dc93fb01bbdc
     volumes:
       - .:/working
     working_dir: /working
