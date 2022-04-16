@@ -34,7 +34,7 @@ export default class SearchService {
         });
 
         if (rows) {
-            const thumbs = SearchService.getThumbnails(atts);
+            const thumbs = SearchService.getThumbnails(atts as CriminalAttachment[]);
             return SearchService.prepareResult(rows, thumbs);
         }
 
