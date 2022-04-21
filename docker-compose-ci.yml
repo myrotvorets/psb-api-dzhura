@@ -19,6 +19,7 @@ services:
       MYSQL_PASSWORD: test
       NPM_CONFIG_LOGLEVEL: silent
       NPM_CONFIG_LOGS_MAX: "0"
+    user: node:node
     depends_on:
       - mysql
 
