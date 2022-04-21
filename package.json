@@ -7,7 +7,7 @@
   "scripts": {
     "wait-for-mysql": "wait-on \"tcp:$MYSQL_HOST:3306\" -t 180000",
     "build": "tsc",
-    "start:dev": "nodemon -L",
+    "start:dev": "env; nodemon -L",
     "lint": "eslint -f gha .",
     "lint:fix": "eslint --fix .",
     "pretest": "npm run lint",
