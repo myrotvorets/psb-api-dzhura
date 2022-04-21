@@ -3,6 +3,7 @@ version: '3.0'
 services:
   dzhura:
     image: node:current-alpine@sha256:469ee26d9e00547ea91202a34ff2542f984c2c60a2edbb4007558ccb76b56df2
+    read_only: true
     volumes:
       - ".:/usr/src/service"
     working_dir: /usr/src/service
