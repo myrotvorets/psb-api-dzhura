@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   dzhura:
-    image: node:current-alpine@sha256:f61706c2cb120c06cf4fdcf60a2822a804b0bd90b6b2209be1ee00db1d33130c
+    image: node:lts-alpine
     read_only: true
     volumes:
       - ".:/usr/src/service"
@@ -17,6 +17,9 @@ services:
       MYSQL_HOST: mysql
       MYSQL_USER: test
       MYSQL_PASSWORD: test
+      NPM_CONFIG_LOGLEVEL: silent
+      NPM_CONFIG_LOGS_MAX: "0"
+    user: node:node
     depends_on:
       - mysql
 
