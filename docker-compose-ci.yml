@@ -16,6 +16,8 @@ services:
       MYSQL_HOST: mysql
       MYSQL_USER: test
       MYSQL_PASSWORD: test
+      NPM_CONFIG_LOGLEVEL: silent
+      NPM_CONFIG_LOGS_MAX: "0"
     depends_on:
       - mysql
 
