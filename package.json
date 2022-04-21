@@ -7,13 +7,13 @@
   "scripts": {
     "wait-for-mysql": "wait-on \"tcp:$MYSQL_HOST:3306\" -t 180000",
     "build": "tsc",
-    "start:dev": "env; nodemon -L",
+    "start:dev": "nodemon -L",
     "lint": "eslint -f gha .",
     "lint:fix": "eslint --fix .",
     "pretest": "npm run lint",
     "test": "NODE_ENV=test jest",
     "posttest": "npm run build",
-    "prescan": "npm run wait-for-mysql && ts-node ./test/migrate.ts",
+    "prescan": "env; npm run wait-for-mysql && ts-node ./test/migrate.ts",
     "scan": "npm run start:dev"
   },
   "keywords": [],
