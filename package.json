@@ -13,7 +13,7 @@
     "pretest": "npm run lint",
     "test": "NODE_ENV=test jest",
     "posttest": "npm run build",
-    "prescan": "env; npm run wait-for-mysql && ts-node ./test/migrate.ts",
+    "prescan": "npm run wait-for-mysql && ts-node ./test/migrate.ts",
     "scan": "npm run start:dev"
   },
   "keywords": [],
