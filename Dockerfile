@@ -1,4 +1,4 @@
-FROM myrotvorets/node:latest@sha256:0ff3be84eba95d363944b834dc0670adb53a39ffacbeb4625f5b658841dba4ec AS base
+FROM myrotvorets/node:latest@sha256:cb9a5b3c04b90802821ba9616615b850a568641eda524c944e9f2f0f6bb528c3 AS base
 USER root
 WORKDIR /srv/service
 RUN chown nobody:nobody /srv/service
@@ -21,7 +21,7 @@ RUN \
 COPY --chown=nobody:nobody ./src ./src
 RUN npm run build -- --declaration false --removeComments true --sourceMap false
 
-FROM myrotvorets/node-min@sha256:487878576574b2b5a20e71c39248990f8a028008606d38f5368476ea4e4c2773
+FROM myrotvorets/node-min@sha256:eacb765568d5e7006c3e92d83fb6a8682709ce0717d78c69f893d6d19fe6302f
 USER root
 WORKDIR /srv/service
 RUN chown nobody:nobody /srv/service
