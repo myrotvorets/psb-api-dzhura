@@ -1,6 +1,10 @@
+/* eslint-disable jest/no-export */
+/* eslint-disable jest/valid-title */
+/* eslint-disable jest/no-disabled-tests */
+
 import wpautop from 'wpautop';
 
-function replaceCallback(match: string, p1: string, p2: string): string {
+function replaceCallback(_match: string, p1: string, p2: string): string {
     let ret = '';
     let url = p2;
     if (/[.,;:]/u.test(url.slice(-1))) {
