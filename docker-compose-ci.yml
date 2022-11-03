@@ -26,7 +26,7 @@ services:
       - mysql
 
   mysql:
-    image: mariadb:latest@sha256:59ef1139afa1ec26f98e316a8dbef657daf9f64f84e9378b190d1d7557ad2feb
+    image: mariadb:latest@sha256:bb39098029f443e8b02a1736c3cb4be1c5d6663a8355d4f9eb0b05693df4b9a0
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: test
