@@ -9,6 +9,7 @@
         "declaration": false,
         "removeComments": false,
         "strict": true,
+        "strictNullChecks": false,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "noFallthroughCasesInSwitch": true,
