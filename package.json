@@ -33,7 +33,7 @@
     "express-openapi-validator": "^5.0.0",
     "knex": "^2.0.0",
     "morgan": "^1.10.0",
-    "mysql2": "^2.2.5",
+    "mysql2": "^3.0.0",
     "objection": "^3.0.0",
     "wpautop": "^1.0.0"
   },
