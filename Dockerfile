@@ -21,7 +21,7 @@ RUN \
 COPY --chown=nobody:nobody ./src ./src
 RUN npm run build -- --declaration false --removeComments true --sourceMap false
 
-FROM myrotvorets/node-min@sha256:6ea1e7fd6edb513c4e8f7ffb10f9d830ad8ec10af89d9f2bedc34690d0175872
+FROM myrotvorets/node-min@sha256:1c5944c03fb6bdfc3defb6310192be02e80390896610f2f603df84df9534dc1b
 USER root
 WORKDIR /srv/service
 RUN chown nobody:nobody /srv/service
