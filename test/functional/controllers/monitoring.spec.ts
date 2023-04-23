@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import { Knex, knex } from 'knex';
+import knexpkg, { type Knex } from 'knex';
 import mockKnex from 'mock-knex';
 import { buildKnexConfig } from '../../../src/knexfile.mjs';
 import monitoringController, { healthChecker } from '../../../src/controllers/monitoring.mjs';
@@ -11,6 +11,7 @@ let db: Knex;
 function buildApp(): express.Express {
     const application = express();
     application.disable('x-powered-by');
+    const knex = knexpkg.default;
     db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
     mockKnex.mock(db);
     application.use('/monitoring', monitoringController(db));

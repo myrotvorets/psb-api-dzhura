@@ -1,5 +1,5 @@
 import mockKnex from 'mock-knex';
-import { knex } from 'knex';
+import knexpkg from 'knex';
 import { Model } from 'objection';
 import SearchService from '../../../src/services/search.mjs';
 import { buildKnexConfig } from '../../../src/knexfile.mjs';
@@ -93,6 +93,7 @@ describe('SearchService', () => {
     });
 
     describe('search', () => {
+        const knex = knexpkg.default;
         const db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
         beforeEach(() => {
             mockKnex.mock(db);

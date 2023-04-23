@@ -1,3 +1,5 @@
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { autoP, makeClickable } from '../../../src/lib/textutils.mjs';
 
@@ -21,9 +23,10 @@ describe('makeClickable', () => {
 
 describe('autoP', () => {
     it('should process the "first post" correctly', async () => {
+        const base = dirname(fileURLToPath(import.meta.url));
         const [input, expected] = await Promise.all([
-            readFile(`${__dirname}/fixtures/first-post-input.txt`, { encoding: 'utf-8' }),
-            readFile(`${__dirname}/fixtures/first-post-expected.txt`, { encoding: 'utf-8' }),
+            readFile(`${base}/fixtures/first-post-input.txt`, { encoding: 'utf-8' }),
+            readFile(`${base}/fixtures/first-post-expected.txt`, { encoding: 'utf-8' }),
         ]);
         expect(autoP(input)).toBe(expected);
     });
