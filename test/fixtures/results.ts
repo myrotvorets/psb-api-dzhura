@@ -8,7 +8,7 @@ export const resultItems = [
         dob: '1952-10-07',
         country: 'Россия',
         address: 'Москва',
-        thumbnail: 'https://psb4ukr.natocdn.net/criminals/00/37/41/1E76206_1-150x150.jpg',
+        thumbnail: 'https://cdn.myrotvorets.center/m/criminals/00/37/41/1E76206_1-150x150.jpg',
     },
     {
         id: 2,

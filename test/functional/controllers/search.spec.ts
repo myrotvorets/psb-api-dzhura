@@ -3,10 +3,10 @@ import request from 'supertest';
 import { Knex, knex } from 'knex';
 import mockKnex from 'mock-knex';
 import { Model } from 'objection';
-import { buildKnexConfig } from '../../../src/knexfile';
-import { configureApp } from '../../../src/server';
-import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses';
-import { resultItems } from '../../fixtures/results';
+import { buildKnexConfig } from '../../../src/knexfile.mjs';
+import { configureApp } from '../../../src/server.mjs';
+import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.js';
+import { resultItems } from '../../fixtures/results.js';
 
 let app: express.Express;
 let db: Knex;

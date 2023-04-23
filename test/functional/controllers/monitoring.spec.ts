@@ -2,8 +2,8 @@ import express from 'express';
 import request from 'supertest';
 import { Knex, knex } from 'knex';
 import mockKnex from 'mock-knex';
-import { buildKnexConfig } from '../../../src/knexfile';
-import monitoringController, { healthChecker } from '../../../src/controllers/monitoring';
+import { buildKnexConfig } from '../../../src/knexfile.mjs';
+import monitoringController, { healthChecker } from '../../../src/controllers/monitoring.mjs';
 
 let app: express.Express;
 let db: Knex;

@@ -1,7 +1,7 @@
 import { Model } from 'objection';
-import { autoP, makeClickable } from '../lib/textutils';
-import Criminal from '../models/criminal';
-import CriminalAttachment from '../models/criminalattachment';
+import { autoP, makeClickable } from '../lib/textutils.mjs';
+import Criminal from '../models/criminal.mjs';
+import CriminalAttachment from '../models/criminalattachment.mjs';
 
 export interface SearchItem {
     id: number;
@@ -61,7 +61,7 @@ export default class SearchService {
             }
 
             if (typeof thumbs[item.id] !== 'undefined') {
-                entry.thumbnail = `https://psb4ukr.natocdn.net/${thumbs[item.id]}`;
+                entry.thumbnail = `https://cdn.myrotvorets.center/m/${thumbs[item.id]}`;
             }
 
             return entry;

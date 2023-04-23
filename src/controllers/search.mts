@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import asyncWrapper from '@myrotvorets/express-async-middleware-wrapper';
-import SearchService from '../services/search';
+import { asyncWrapperMiddleware } from '@myrotvorets/express-async-middleware-wrapper';
+import SearchService from '../services/search.mjs';
 
 async function searchHandler(req: Request, res: Response, next: NextFunction): Promise<void> {
     const result = await SearchService.search(req.query.s as string);
@@ -21,6 +21,6 @@ async function searchHandler(req: Request, res: Response, next: NextFunction): P
 
 export default function searchController(): Router {
     const router = Router();
-    router.get('/search', asyncWrapper(searchHandler));
+    router.get('/search', asyncWrapperMiddleware(searchHandler));
     return router;
 }

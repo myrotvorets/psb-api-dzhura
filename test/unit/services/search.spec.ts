@@ -1,12 +1,11 @@
-/* eslint-disable jest/no-conditional-expect */
 import mockKnex from 'mock-knex';
-import knex from 'knex';
+import { knex } from 'knex';
 import { Model } from 'objection';
-import SearchService from '../../../src/services/search';
-import { buildKnexConfig } from '../../../src/knexfile';
-import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses';
-import { resultItems } from '../../fixtures/results';
-import CriminalAttachment from '../../../src/models/criminalattachment';
+import SearchService from '../../../src/services/search.mjs';
+import { buildKnexConfig } from '../../../src/knexfile.mjs';
+import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.js';
+import { resultItems } from '../../fixtures/results.js';
+import CriminalAttachment from '../../../src/models/criminalattachment.mjs';
 
 class MySearchService extends SearchService {
     public static testPrepareName(name: string): string | null {

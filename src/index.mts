@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import './lib/tracing';
-import { run } from './server';
+import './lib/tracing.mjs';
+import { run } from './server.mjs';
 
 run().catch((e) => console.error(e));

@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 import { OpenTelemetryConfigurator } from '@myrotvorets/opentelemetry-configurator';
 import { KnexInstrumentation } from '@myrotvorets/opentelemetry-plugin-knex';
 
@@ -10,6 +10,6 @@ if (+(process.env.ENABLE_TRACING || 0)) {
         instrumentations: [new KnexInstrumentation()],
     });
 
-    configurator.start().catch((e) => console.error('Failed to initialize OpenTelemetry:', e));
+    configurator.start().catch((e: Error) => console.error('Failed to initialize OpenTelemetry:', e));
     EventEmitter.defaultMaxListeners += 5;
 }

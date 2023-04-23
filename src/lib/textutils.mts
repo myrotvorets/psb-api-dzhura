@@ -1,7 +1,3 @@
-/* eslint-disable jest/no-export */
-/* eslint-disable jest/valid-title */
-/* eslint-disable jest/no-disabled-tests */
-
 import wpautop from 'wpautop';
 
 function replaceCallback(_match: string, p1: string, p2: string): string {

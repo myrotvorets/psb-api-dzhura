@@ -1,4 +1,4 @@
-import { Environment, environment } from '../../../src/lib/environment';
+import { Environment, environment } from '../../../src/lib/environment.mjs';
 
 describe('environment', () => {
     const env = { ...process.env };
