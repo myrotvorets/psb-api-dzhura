@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs';
-import { autoP, makeClickable } from '../../../src/lib/textutils';
+import { readFile } from 'node:fs/promises';
+import { autoP, makeClickable } from '../../../src/lib/textutils.mjs';
 
 describe('makeClickable', () => {
     const patterns = [
@@ -20,9 +20,11 @@ describe('makeClickable', () => {
 });
 
 describe('autoP', () => {
-    it('should process the "first post" correctly', function () {
-        const input = readFileSync(`${__dirname}/fixtures/first-post-input.txt`, { encoding: 'utf-8' });
-        const expected = readFileSync(`${__dirname}/fixtures/first-post-expected.txt`, { encoding: 'utf-8' });
+    it('should process the "first post" correctly', async () => {
+        const [input, expected] = await Promise.all([
+            readFile(`${__dirname}/fixtures/first-post-input.txt`, { encoding: 'utf-8' }),
+            readFile(`${__dirname}/fixtures/first-post-expected.txt`, { encoding: 'utf-8' }),
+        ]);
         expect(autoP(input)).toBe(expected);
     });
 });

@@ -1,6 +1,9 @@
-import { join } from 'path';
-import knex from 'knex';
-import { buildKnexConfig } from '../src/knexfile';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import knexpkg from 'knex';
+import { buildKnexConfig } from '../src/knexfile.mjs';
+
+const knex = knexpkg.default;
 
 (async (): Promise<void> => {
     const { NODE_ENV: env } = process.env;
@@ -15,7 +18,7 @@ import { buildKnexConfig } from '../src/knexfile';
         process.stdout.write('Rolling back all migrations, if any\n');
         await db.migrate.rollback(
             {
-                directory: join(__dirname, 'migrations'),
+                directory: join(dirname(fileURLToPath(import.meta.url)), 'migrations'),
             },
             true,
         );
@@ -23,14 +26,14 @@ import { buildKnexConfig } from '../src/knexfile';
 
     process.stdout.write('Creating tables\n');
     await db.migrate.latest({
-        directory: join(__dirname, 'migrations'),
+        directory: join(dirname(fileURLToPath(import.meta.url)), 'migrations'),
     });
 
     process.stdout.write('DONE\n');
 
     if (process.env.SEED_TABLES === 'yes') {
         await db.seed.run({
-            directory: join(__dirname, 'seeds'),
+            directory: join(dirname(fileURLToPath(import.meta.url)), 'seeds'),
         });
     }
 

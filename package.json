@@ -3,7 +3,7 @@
   "version": "1.8.0",
   "private": true,
   "description": "Dzhura integration microservice",
-  "main": "dist/src/index.js",
+  "type": "module",
   "scripts": {
     "wait-for-mysql": "wait-on \"tcp:$MYSQL_HOST:3306\" -t 180000",
     "build": "tsc",
@@ -13,7 +13,7 @@
     "pretest": "npm run lint",
     "test": "NODE_ENV=test jest",
     "posttest": "npm run build",
-    "prescan": "npm run wait-for-mysql && ts-node ./test/migrate.ts",
+    "prescan": "npm run wait-for-mysql && ts-node ./test/migrate.mts",
     "scan": "npm run start:dev"
   },
   "keywords": [],
