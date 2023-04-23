@@ -1,4 +1,5 @@
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import knexpkg, { type Knex } from 'knex';
 import { Model } from 'objection';
@@ -12,14 +13,13 @@ import { environment } from './lib/environment.mjs';
 
 import searchController from './controllers/search.mjs';
 import monitoringController from './controllers/monitoring.mjs';
-import { curdir } from './curdir.cjs';
 
 export async function configureApp(app: express.Express): Promise<void> {
     const env = environment();
 
     await installOpenApiValidator(
-        // join(dirname(fileURLToPath(import.meta.url)), 'specs', 'dzhura.yaml'),
-        join(curdir(), 'specs', 'dzhura.yaml'),
+        join(dirname(fileURLToPath(import.meta.url)), 'specs', 'dzhura.yaml'),
+        // join(curdir(), 'specs', 'dzhura.yaml'),
         app,
         env.NODE_ENV,
     );

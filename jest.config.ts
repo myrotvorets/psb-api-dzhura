@@ -1,15 +1,15 @@
 import type { JestConfigWithTsJest } from 'ts-jest';
 
 const config: JestConfigWithTsJest = {
-    extensionsToTreatAsEsm: ['.mts', '.ts'],
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.mjs$': '$1.mts',
         '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     transform: {
-        '^.+\\.m?ts$': [
+        '^.+\\.m?[jt]s$': [
             'ts-jest',
             {
+                isolatedModules: true,
                 useESM: true,
             },
         ],
@@ -18,7 +18,7 @@ const config: JestConfigWithTsJest = {
     collectCoverageFrom: ['src/**/*.mts'],
     clearMocks: true,
     verbose: true,
-    preset: 'ts-jest',
+    preset: 'ts-jest/presets/default-esm',
     testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
     testResultsProcessor: 'jest-sonar-reporter',
     reporters: ['default', process.env.GITHUB_ACTIONS === 'true' ? 'jest-github-actions-reporter' : null].filter(

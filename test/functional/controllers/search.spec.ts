@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import { Knex, knex } from 'knex';
+import knexpkg, { type Knex } from 'knex';
 import mockKnex from 'mock-knex';
 import { Model } from 'objection';
 import { buildKnexConfig } from '../../../src/knexfile.mjs';
@@ -13,6 +13,7 @@ let db: Knex;
 
 async function buildApp(): Promise<express.Express> {
     const application = express();
+    const knex = knexpkg.default;
     db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
     mockKnex.mock(db);
     Model.knex(db);
