@@ -1,4 +1,4 @@
-FROM myrotvorets/node:latest@sha256:f6b44b275524c56a27eae33e2769bbe84b0f1d54acf1a01a57c877fcf6744508 AS base
+FROM myrotvorets/node:latest@sha256:866a04d787a65ee94fb5e28a04b925319c652290d93f2883abf630400033a5d6 AS base
 USER root
 WORKDIR /srv/service
 RUN chown nobody:nobody /srv/service
