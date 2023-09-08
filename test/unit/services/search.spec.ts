@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import mockKnex from 'mock-knex';
 import knexpkg from 'knex';
 import { Model } from 'objection';
@@ -93,8 +94,7 @@ describe('SearchService', () => {
     });
 
     describe('search', () => {
-        const knex = knexpkg.default;
-        const db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+        const db = knexpkg(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
         beforeEach(() => {
             mockKnex.mock(db);
             Model.knex(db);

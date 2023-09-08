@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import knexpkg from 'knex';
 import { buildKnexConfig } from '../src/knexfile.mjs';
 
-const knex = knexpkg.default;
+const knex = knexpkg;
 
 (async (): Promise<void> => {
     const { NODE_ENV: env } = process.env;
