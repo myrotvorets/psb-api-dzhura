@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ES2022",
         "module": "ES2022",
-        "moduleResolution": "nodenext",
+        "moduleResolution": "node",
         "noEmitOnError": true,
         "outDir": "./dist",
         "rootDirs": ["src", "test"],

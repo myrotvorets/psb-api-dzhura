@@ -48,8 +48,7 @@ export function setupApp(): express.Express {
 
 /* istanbul ignore next */
 function setupKnex(): Knex {
-    const knex = knexpkg.default;
-    const db = knex(buildKnexConfig());
+    const db = knexpkg(buildKnexConfig());
     Model.knex(db);
     return db;
 }

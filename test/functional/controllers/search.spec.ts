@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import express from 'express';
 import request from 'supertest';
 import knexpkg, { type Knex } from 'knex';
@@ -13,8 +14,7 @@ let db: Knex;
 
 async function buildApp(): Promise<express.Express> {
     const application = express();
-    const knex = knexpkg.default;
-    db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+    db = knexpkg(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
     mockKnex.mock(db);
     Model.knex(db);
 
