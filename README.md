@@ -4,4 +4,3 @@
 [![Build and Test](https://github.com/myrotvorets/psb-api-microservice-dzhura/actions/workflows/build.yml/badge.svg)](https://github.com/myrotvorets/psb-api-microservice-dzhura/actions/workflows/build.yml)
 [![Docker CI](https://github.com/myrotvorets/psb-api-microservice-dzhura/actions/workflows/docker.yml/badge.svg)](https://github.com/myrotvorets/psb-api-microservice-dzhura/actions/workflows/docker.yml)
 [![Package Audit](https://github.com/myrotvorets/psb-api-microservice-dzhura/actions/workflows/package-audit.yml/badge.svg)](https://github.com/myrotvorets/psb-api-microservice-dzhura/actions/workflows/package-audit.yml)
-[![codebeat badge](https://codebeat.co/badges/5c601d09-c89e-4e13-b34b-bff6c3223f7d)](https://codebeat.co/projects/github-com-myrotvorets-psb-api-microservice-dzhura-master)
