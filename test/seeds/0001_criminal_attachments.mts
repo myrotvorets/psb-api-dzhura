@@ -1,5 +1,3 @@
-/* istanbul ignore file */
-
 import type { Knex } from 'knex';
 
 const seedData = [

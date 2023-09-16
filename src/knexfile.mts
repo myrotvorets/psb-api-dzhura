@@ -1,5 +1,4 @@
-/* istanbul ignore file */
-
+/* c8 ignore start */
 import { cleanEnv, num, str } from 'envalid';
 import type { Knex } from 'knex';
 
@@ -46,3 +45,4 @@ export function buildKnexConfig(environment: NodeJS.Dict<string> = process.env):
         },
     };
 }
+/* c8 ignore end */
