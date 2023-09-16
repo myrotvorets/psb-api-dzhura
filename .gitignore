@@ -1,5 +1,6 @@
 /coverage/
 /dist/
 /node_modules/
-/test-report.xml
 /.env
+/.npmrc.local
+/test-report.xml

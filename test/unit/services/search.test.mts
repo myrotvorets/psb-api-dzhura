@@ -1,12 +1,14 @@
 /* eslint-disable import/no-named-as-default-member */
+import { afterEach, beforeEach, describe, it } from 'mocha';
+import { expect } from 'chai';
 import mockKnex from 'mock-knex';
-import knexpkg from 'knex';
+import * as knexpkg from 'knex';
 import { Model } from 'objection';
-import SearchService from '../../../src/services/search.mjs';
+import { SearchService } from '../../../src/services/search.mjs';
 import { buildKnexConfig } from '../../../src/knexfile.mjs';
-import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.js';
-import { resultItems } from '../../fixtures/results.js';
-import CriminalAttachment from '../../../src/models/criminalattachment.mjs';
+import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.mjs';
+import { resultItems } from '../../fixtures/results.mjs';
+import { CriminalAttachment } from '../../../src/models/criminalattachment.mjs';
 
 class MySearchService extends SearchService {
     public static testPrepareName(name: string): string | null {
@@ -22,7 +24,7 @@ describe('SearchService', () => {
     describe('prepareName', () => {
         const tester = (input: string, expected: string | null): void => {
             const actual = MySearchService.testPrepareName(input);
-            expect(actual).toBe(expected);
+            expect(actual).to.equal(expected);
         };
 
         const table1: [string, string | null][] = [
@@ -34,7 +36,9 @@ describe('SearchService', () => {
             ['@@@ ### $$$', null],
         ];
 
-        it.each(table1)('should discard names having less than two unique lexemes (%s)', tester);
+        table1.forEach(([input, expected]) =>
+            it(`should discard names having less than two unique lexemes ('${input}')`, () => tester(input, expected)),
+        );
 
         const table2: [string, string][] = [
             ['пУтин владимир', '>"путин владимир" +путин +владимир'],
@@ -43,7 +47,10 @@ describe('SearchService', () => {
             ['путин-хуйло', '>"путин хуйло" +путин +хуйло'],
         ];
 
-        it.each(table2)('should correctly handle names with two lexemes (%s => %s)', tester);
+        table2.forEach(([input, expected]) =>
+            it(`should correctly handle names with two lexemes ('${input}' => '${expected}')`, () =>
+                tester(input, expected)),
+        );
 
         const table3: [string, string][] = [
             [
@@ -56,7 +63,10 @@ describe('SearchService', () => {
             ],
         ];
 
-        it.each(table3)('should correctly handle names with more than two lexemes (%s => %s)', tester);
+        table3.forEach(([input, expected]) =>
+            it(`should correctly handle names with more than two lexemes ('${input}' => '${expected}')`, () =>
+                tester(input, expected)),
+        );
     });
 
     describe('getThumbnails', () => {
@@ -76,10 +86,10 @@ describe('SearchService', () => {
                 3: 'another/filename-150x150.jpg',
             };
 
-            expect(MySearchService.testGetThumbnails(input)).toStrictEqual(expected);
+            expect(MySearchService.testGetThumbnails(input)).to.deep.equal(expected);
         });
 
-        it('should use the first attachemnt for the criminal', () => {
+        it('should use the first attachment for the criminal', () => {
             const input: CriminalAttachment[] = [
                 CriminalAttachment.fromJson({ id: 1, att_id: 2, path: '1.png', mime_type: 'image/png' }),
                 CriminalAttachment.fromJson({ id: 1, att_id: 3, path: '2.jpg', mime_type: 'image/jpeg' }),
@@ -89,12 +99,14 @@ describe('SearchService', () => {
                 1: '1-150x150.png',
             };
 
-            expect(MySearchService.testGetThumbnails(input)).toStrictEqual(expected);
+            expect(MySearchService.testGetThumbnails(input)).to.deep.equal(expected);
         });
     });
 
     describe('search', () => {
-        const db = knexpkg(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+        const { knex } = knexpkg.default;
+        const db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+
         beforeEach(() => {
             mockKnex.mock(db);
             Model.knex(db);
@@ -114,9 +126,10 @@ describe('SearchService', () => {
             ['@@@ ### $$$'],
         ];
 
-        it.each(table1)('should return null when prepareName returns falsy value (%s)', (name: string) => {
-            return expect(SearchService.search(name)).resolves.toBeNull();
-        });
+        table1.forEach(([name]) =>
+            it(`should return null when prepareName returns falsy value ('${name}')`, () =>
+                expect(SearchService.search(name)).to.eventually.be.null),
+        );
 
         it('should return an empty array if there are no matches', () => {
             const tracker = mockKnex.getTracker();
@@ -124,15 +137,15 @@ describe('SearchService', () => {
                 switch (step) {
                     case 1: // BEGIN
                     case 3: // COMMIT
-                        expect(query.transacting).toBe(true);
-                        expect(query.method).toBeUndefined();
+                        expect(query.transacting).to.be.true;
+                        expect(query.method).to.be.undefined;
                         query.response([]);
                         break;
 
                     case 2:
-                        expect(query.transacting).toBe(true);
-                        expect(query.method).toBe('select');
-                        expect(query.bindings).toHaveLength(4);
+                        expect(query.transacting).to.be.true;
+                        expect(query.method).to.equal('select');
+                        expect(query.bindings).to.have.length(4);
                         query.response([]);
                         break;
 
@@ -142,7 +155,7 @@ describe('SearchService', () => {
             });
 
             tracker.install();
-            return expect(SearchService.search('Путин Владимир')).resolves.toEqual([]);
+            return expect(SearchService.search('Путин Владимир')).to.become([]);
         });
 
         it('should return the expected results', () => {
@@ -151,22 +164,22 @@ describe('SearchService', () => {
                 switch (step) {
                     case 1: // BEGIN
                     case 4: // COMMIT
-                        expect(query.transacting).toBe(true);
-                        expect(query.method).toBeUndefined();
+                        expect(query.transacting).to.be.true;
+                        expect(query.method).to.be.undefined;
                         query.response([]);
                         break;
 
                     case 2:
-                        expect(query.transacting).toBe(true);
-                        expect(query.method).toBe('select');
-                        expect(query.bindings).toHaveLength(4);
+                        expect(query.transacting).to.be.true;
+                        expect(query.method).to.equal('select');
+                        expect(query.bindings).to.have.length(4);
                         query.response(criminalResponse);
                         break;
 
                     case 3:
-                        expect(query.transacting).toBe(true);
-                        expect(query.method).toBe('select');
-                        expect(query.bindings).toHaveLength(3);
+                        expect(query.transacting).to.be.true;
+                        expect(query.method).to.equal('select');
+                        expect(query.bindings).to.have.length(3);
                         query.response(attachmentResponse);
                         break;
 
@@ -176,7 +189,7 @@ describe('SearchService', () => {
             });
 
             tracker.install();
-            return expect(SearchService.search('Our mock will find everything')).resolves.toEqual(resultItems);
+            return expect(SearchService.search('Our mock will find everything')).to.become(resultItems);
         });
     });
 });

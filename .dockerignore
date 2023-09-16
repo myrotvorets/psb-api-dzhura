@@ -1,5 +1,6 @@
 *
 !.npmrc
+!.npmrc.local
 !src
 !package.json
 !package-lock.json

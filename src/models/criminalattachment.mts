@@ -1,6 +1,6 @@
-import { Model, Modifiers, QueryBuilder } from 'objection';
+import { Model, type Modifiers, type QueryBuilder } from 'objection';
 
-export default class CriminalAttachment extends Model {
+export class CriminalAttachment extends Model {
     public id!: number;
     public att_id!: number;
     public path!: string;

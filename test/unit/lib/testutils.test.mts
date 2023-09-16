@@ -1,6 +1,8 @@
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 import { autoP, makeClickable } from '../../../src/lib/textutils.mjs';
 
 describe('makeClickable', () => {
@@ -15,9 +17,11 @@ describe('makeClickable', () => {
         ['https://.', 'https://.'],
     ];
 
-    it.each(patterns)('should convert %s to %s', (input: string, expected: string) => {
-        const actual = makeClickable(input);
-        expect(actual).toBe(expected);
+    patterns.forEach(([input, expected]) => {
+        it(`should convert '${input}' to '${expected}'`, () => {
+            const actual = makeClickable(input);
+            expect(actual).to.equal(expected);
+        });
     });
 });
 
@@ -28,6 +32,6 @@ describe('autoP', () => {
             readFile(`${base}/fixtures/first-post-input.txt`, { encoding: 'utf-8' }),
             readFile(`${base}/fixtures/first-post-expected.txt`, { encoding: 'utf-8' }),
         ]);
-        expect(autoP(input)).toBe(expected);
+        expect(autoP(input)).to.equal(expected);
     });
 });

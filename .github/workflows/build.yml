@@ -34,5 +34,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-        env:
-          COLLECT_COVERAGE: "0"

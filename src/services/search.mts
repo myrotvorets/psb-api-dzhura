@@ -1,7 +1,7 @@
 import { Model } from 'objection';
 import { autoP, makeClickable } from '../lib/textutils.mjs';
-import Criminal from '../models/criminal.mjs';
-import CriminalAttachment from '../models/criminalattachment.mjs';
+import { Criminal } from '../models/criminal.mjs';
+import { CriminalAttachment } from '../models/criminalattachment.mjs';
 
 export interface SearchItem {
     id: number;
@@ -15,7 +15,7 @@ export interface SearchItem {
     thumbnail?: string;
 }
 
-export default class SearchService {
+export class SearchService {
     public static async search(name: string): Promise<SearchItem[] | null> {
         const n = SearchService.prepareName(name);
         if (!n) {
