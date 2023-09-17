@@ -7,6 +7,7 @@ on:
     paths:
       - package.json
       - package-lock.json
+      - .github/workflows/package-audit.yml
   workflow_dispatch:
 
 permissions:
@@ -14,6 +15,7 @@ permissions:
 
 jobs:
   audit-npm:
+    name: NPM Audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,4 +27,4 @@ jobs:
           node-version: lts/*
 
       - name: Run audit
-        run: npm audit --production
+        run: npm audit --omit=dev
