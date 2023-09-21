@@ -1,7 +1,7 @@
 /** @type {import('mocha').MochaOptions} */
 module.exports = {
     recursive: true,
-    spec: ['test/**/*.test.mts'],
+    extension: ['.test.mts'],
     'node-option': ['loader=ts-node/esm', 'no-warnings'],
     require: 'mocha.setup.mjs',
     reporter: 'mocha-multi',
