@@ -29,7 +29,7 @@
     "@myrotvorets/opentelemetry-configurator": "^3.1.0",
     "@myrotvorets/opentelemetry-plugin-knex": "^0.29.0",
     "@opentelemetry/instrumentation-express": "^0.33.0",
-    "envalid": "^7.0.0",
+    "envalid": "^8.0.0",
     "express": "^4.17.1",
     "express-openapi-validator": "^5.0.0",
     "knex": "^2.0.0",
