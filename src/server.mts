@@ -59,6 +59,26 @@ export async function run(): Promise<void> {
 
     await configureApp(app);
 
-    (await createServer(app)).listen(env.PORT);
+    const server = await createServer(app);
+
+    server.on('close', () => {
+        db.destroy().catch((e) => console.error('Failed to close database connection', e));
+    });
+
+    const finish = (): void => {
+        server.close((err) => {
+            if (err) {
+                console.error('Failed to close server', err);
+            } else {
+                process.exit(0);
+            }
+        });
+    };
+
+    process.on('SIGTERM', finish);
+    process.on('SIGINT', finish);
+    process.on('SIGQUIT', finish);
+
+    server.listen(env.PORT);
 }
 /* c8 ignore end */

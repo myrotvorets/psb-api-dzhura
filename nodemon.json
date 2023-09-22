@@ -1,5 +1,6 @@
 {
   "watch": ["src"],
   "ext": "mts",
-  "exec": "rm -rf dist && ts-node-script --transpile-only ./src/index.mts"
+  "exec": "rm -rf dist && ts-node-script --transpile-only ./src/index.mts",
+  "signal": "SIGTERM"
 }
