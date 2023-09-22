@@ -1,0 +1,54 @@
+{
+    "name": "Dzhura",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "dzhura",
+    "workspaceFolder": "/usr/src/service",
+    "forwardPorts": [80, 8080, 9411],
+    "portsAttributes": {
+        "80": {
+            "label": "Application (Frontend)",
+            "onAutoForward": "notify"
+        },
+        "3000": {
+            "label": "Application (Backend)",
+            "onAutoForward": "ignore"
+        },
+        "8080": {
+            "label": "Adminer",
+            "onAutoForward": "notify"
+        },
+        "9411": {
+            "label": "Zipkin",
+            "onAutoForward": "notify"
+        }
+    },
+    "remoteUser": "vscode",
+    "postCreateCommand": "/usr/local/bin/post-create.sh",
+    "secrets": {
+        "READ_PACKAGES_TOKEN": {
+            "description": "Personal access token to install packages from ghcr.io"
+        }
+    },
+    "customizations": {
+        "codespaces": {
+            "repositories": {
+                "myrotvorets/psb-api-microservice-dzhura": {
+                    "permissions": {
+                        "packages": "read"
+                    }
+                }
+            }
+        },
+        "vscode": {
+            "extensions": [
+                "dlech.chmod",
+                "dbaeumer.vscode-eslint",
+                "GitHub.copilot",
+                "esbenp.prettier-vscode",
+                "timonwong.shellcheck",
+                "ms-azuretools.vscode-docker",
+                "zhiayang.tabindentspacealign"
+            ]
+        }
+    }
+}

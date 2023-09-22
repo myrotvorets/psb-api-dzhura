@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+exec 2>&1
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+install -d -o vscode -g vscode -m 0755 /var/log/dzhura
+exec sudo -u vscode -H /usr/local/bin/start-dzhura.sh > /var/log/dzhura/start.log 2>&1
