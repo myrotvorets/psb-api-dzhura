@@ -1,0 +1,54 @@
+services:
+  dzhura:
+    build:
+      context: .docker/dzhura
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      NO_UPDATE_NOTIFIER: 'true'
+      NPM_CONFIG_FUND: '0'
+      SUPPRESS_SUPPORT: '1'
+      HTTPS: '0'
+      PORT: '3000'
+      ENABLE_TRACING: '1'
+      ZIPKIN_ENDPOINT: http://zipkin:9411/api/v2/spans
+      MYSQL_DATABASE: myrotvorets
+      MYSQL_USER: myro
+      MYSQL_PASSWORD: pass
+      MYSQL_HOST: mariadb
+      MYSQL_CONN_LIMIT: '3'
+    restart: always
+    volumes:
+      - "../:/usr/src/service"
+    working_dir: /usr/src/service
+
+  mariadb:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: myrotvorets
+      MYSQL_USER: myro
+      MYSQL_PASSWORD: pass
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+    restart: always
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    restart: always
+
+  swagger:
+    image: swaggerapi/swagger-ui:latest
+    environment:
+      SWAGGER_JSON_URL: /specs/dzhura.yaml
+      BASE_URL: /swagger
+
+volumes:
+  mysql_data:

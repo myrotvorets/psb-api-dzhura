@@ -1,6 +1,6 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import express from 'express';
+import express, { type Express, static as staticMiddleware } from 'express';
 import * as knexpkg from 'knex';
 import { Model } from 'objection';
 import { installOpenApiValidator } from '@myrotvorets/oav-installer';
@@ -14,8 +14,18 @@ import { environment } from './lib/environment.mjs';
 import { searchController } from './controllers/search.mjs';
 import { monitoringController } from './controllers/monitoring.mjs';
 
-export async function configureApp(app: express.Express): Promise<void> {
+export async function configureApp(app: Express): Promise<void> {
     const env = environment();
+
+    if (env.NODE_ENV !== 'production') {
+        app.use(
+            '/specs/',
+            staticMiddleware(join(dirname(fileURLToPath(import.meta.url)), 'specs'), {
+                acceptRanges: false,
+                index: false,
+            }),
+        );
+    }
 
     await installOpenApiValidator(
         join(dirname(fileURLToPath(import.meta.url)), 'specs', 'dzhura.yaml'),
@@ -29,7 +39,7 @@ export async function configureApp(app: express.Express): Promise<void> {
 }
 
 /* c8 ignore start */
-export function setupApp(): express.Express {
+export function setupApp(): Express {
     const app = express();
     app.set('strict routing', true);
     app.set('x-powered-by', false);
