@@ -26,7 +26,7 @@ describe('SearchService', function () {
             expect(actual).to.equal(expected);
         };
 
-        const table1: [string, string | null][] = [
+        const table1: [string, null][] = [
             ['путинхуйло', null],
             ['путин путин', null],
             ['Путин путин', null],
@@ -42,12 +42,12 @@ describe('SearchService', function () {
             }),
         );
 
-        const table2: [string, string][] = [
+        const table2 = [
             ['пУтин владимир', '>"путин владимир" +путин +владимир'],
             ['Путин путин владимир', '>"путин владимир" +путин +владимир'],
             ['Путин@ #владимир ', '>"путин владимир" +путин +владимир'],
             ['путин-хуйло', '>"путин хуйло" +путин +хуйло'],
-        ];
+        ] as const;
 
         // eslint-disable-next-line mocha/no-setup-in-describe
         table2.forEach(([input, expected]) =>
@@ -56,7 +56,7 @@ describe('SearchService', function () {
             }),
         );
 
-        const table3: [string, string][] = [
+        const table3 = [
             [
                 'пУтин владимир владимирович',
                 '>"путин владимир владимирович" "путин владимир" +путин +владимир владимирович',
@@ -65,7 +65,7 @@ describe('SearchService', function () {
                 'Путин-Хуйло Вальдемар Вальдемарович',
                 '>"путин хуйло вальдемар вальдемарович" "путин хуйло" +путин +хуйло вальдемар вальдемарович',
             ],
-        ];
+        ] as const;
 
         // eslint-disable-next-line mocha/no-setup-in-describe
         table3.forEach(([input, expected]) =>
@@ -128,16 +128,16 @@ describe('SearchService', function () {
         });
 
         const table1 = [
-            ['путинхуйло'],
-            ['путин путин'],
-            ['Путин путин'],
-            ['Путин  путин '],
-            ['Путин@ #путин '],
-            ['@@@ ### $$$'],
-        ];
+            'путинхуйло',
+            'путин путин',
+            'Путин путин',
+            'Путин  путин ',
+            'Путин@ #путин ',
+            '@@@ ### $$$',
+        ] as const;
 
         // eslint-disable-next-line mocha/no-setup-in-describe
-        table1.forEach(([name]) =>
+        table1.forEach((name) =>
             it(`should return null when prepareName returns falsy value ('${name}')`, function () {
                 return expect(SearchService.search(name)).to.eventually.be.null;
             }),

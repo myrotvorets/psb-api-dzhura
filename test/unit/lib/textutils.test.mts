@@ -15,7 +15,7 @@ describe('Text Utilities', function () {
             ['ftp://example.com', 'ftp://example.com'],
             ['https://', 'https://'],
             ['https://.', 'https://.'],
-        ];
+        ] as const;
 
         // eslint-disable-next-line mocha/no-setup-in-describe
         patterns.forEach(([input, expected]) => {
