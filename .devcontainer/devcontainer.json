@@ -43,12 +43,14 @@
             "extensions": [
                 "dlech.chmod",
                 "dbaeumer.vscode-eslint",
-                "GitHub.copilot",
                 "esbenp.prettier-vscode",
                 "timonwong.shellcheck",
                 "ms-azuretools.vscode-docker",
                 "zhiayang.tabindentspacealign"
-            ]
+            ],
+            "settings": {
+                "files.autoSave": "onWindowChange"
+            }
         }
     }
 }
