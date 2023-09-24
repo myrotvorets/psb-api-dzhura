@@ -4,7 +4,8 @@
     "sourceType": "module"
   },
   "extends": [
-    "@myrotvorets/myrotvorets-ts"
+    "@myrotvorets/myrotvorets-ts",
+    "plugin:mocha/recommended"
   ],
   "env": {
     "es2022": true,

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-named-as-default-member */
-import { afterEach, beforeEach, describe, it } from 'mocha';
 import { expect } from 'chai';
 import mockKnex from 'mock-knex';
 import * as knexpkg from 'knex';
@@ -20,8 +19,8 @@ class MySearchService extends SearchService {
     }
 }
 
-describe('SearchService', () => {
-    describe('prepareName', () => {
+describe('SearchService', function () {
+    describe('prepareName', function () {
         const tester = (input: string, expected: string | null): void => {
             const actual = MySearchService.testPrepareName(input);
             expect(actual).to.equal(expected);
@@ -36,8 +35,11 @@ describe('SearchService', () => {
             ['@@@ ### $$$', null],
         ];
 
+        // eslint-disable-next-line mocha/no-setup-in-describe
         table1.forEach(([input, expected]) =>
-            it(`should discard names having less than two unique lexemes ('${input}')`, () => tester(input, expected)),
+            it(`should discard names having less than two unique lexemes ('${input}')`, function () {
+                return tester(input, expected);
+            }),
         );
 
         const table2: [string, string][] = [
@@ -47,9 +49,11 @@ describe('SearchService', () => {
             ['путин-хуйло', '>"путин хуйло" +путин +хуйло'],
         ];
 
+        // eslint-disable-next-line mocha/no-setup-in-describe
         table2.forEach(([input, expected]) =>
-            it(`should correctly handle names with two lexemes ('${input}' => '${expected}')`, () =>
-                tester(input, expected)),
+            it(`should correctly handle names with two lexemes ('${input}' => '${expected}')`, function () {
+                return tester(input, expected);
+            }),
         );
 
         const table3: [string, string][] = [
@@ -63,14 +67,16 @@ describe('SearchService', () => {
             ],
         ];
 
+        // eslint-disable-next-line mocha/no-setup-in-describe
         table3.forEach(([input, expected]) =>
-            it(`should correctly handle names with more than two lexemes ('${input}' => '${expected}')`, () =>
-                tester(input, expected)),
+            it(`should correctly handle names with more than two lexemes ('${input}' => '${expected}')`, function () {
+                return tester(input, expected);
+            }),
         );
     });
 
-    describe('getThumbnails', () => {
-        it('should insert -150x150 suffix', () => {
+    describe('getThumbnails', function () {
+        it('should insert -150x150 suffix', function () {
             const input: CriminalAttachment[] = [
                 CriminalAttachment.fromJson({ id: 1, att_id: 2, path: 'some/file.png', mime_type: 'image/png' }),
                 CriminalAttachment.fromJson({
@@ -89,7 +95,7 @@ describe('SearchService', () => {
             expect(MySearchService.testGetThumbnails(input)).to.deep.equal(expected);
         });
 
-        it('should use the first attachment for the criminal', () => {
+        it('should use the first attachment for the criminal', function () {
             const input: CriminalAttachment[] = [
                 CriminalAttachment.fromJson({ id: 1, att_id: 2, path: '1.png', mime_type: 'image/png' }),
                 CriminalAttachment.fromJson({ id: 1, att_id: 3, path: '2.jpg', mime_type: 'image/jpeg' }),
@@ -103,16 +109,20 @@ describe('SearchService', () => {
         });
     });
 
-    describe('search', () => {
-        const { knex } = knexpkg.default;
-        const db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+    describe('search', function () {
+        let db: knexpkg.Knex;
 
-        beforeEach(() => {
+        before(function () {
+            const { knex } = knexpkg.default;
+            db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+        });
+
+        beforeEach(function () {
             mockKnex.mock(db);
             Model.knex(db);
         });
 
-        afterEach(() => {
+        afterEach(function () {
             mockKnex.getTracker().uninstall();
             mockKnex.unmock(db);
         });
@@ -126,12 +136,14 @@ describe('SearchService', () => {
             ['@@@ ### $$$'],
         ];
 
+        // eslint-disable-next-line mocha/no-setup-in-describe
         table1.forEach(([name]) =>
-            it(`should return null when prepareName returns falsy value ('${name}')`, () =>
-                expect(SearchService.search(name)).to.eventually.be.null),
+            it(`should return null when prepareName returns falsy value ('${name}')`, function () {
+                return expect(SearchService.search(name)).to.eventually.be.null;
+            }),
         );
 
-        it('should return an empty array if there are no matches', () => {
+        it('should return an empty array if there are no matches', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
                 switch (step) {
@@ -158,7 +170,7 @@ describe('SearchService', () => {
             return expect(SearchService.search('Путин Владимир')).to.become([]);
         });
 
-        it('should return the expected results', () => {
+        it('should return the expected results', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
                 switch (step) {
