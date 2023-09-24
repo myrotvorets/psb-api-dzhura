@@ -35,17 +35,17 @@ services:
       - mysql_data:/var/lib/mysql
 
   adminer:
-    image: adminer:latest
+    image: adminer:latest@sha256:40c1d6691703a8ca102dc108c4a6fc11863e928b6ae6014fb8557b6e083a29ff
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
     restart: always
 
   zipkin:
-    image: openzipkin/zipkin:latest
+    image: openzipkin/zipkin:latest@sha256:5fd55e6a109233b36d419d7fd2449588d17a6e4da7ed7a3fd0d09c86f1c75a15
     restart: always
 
   swagger:
-    image: swaggerapi/swagger-ui:latest
+    image: swaggerapi/swagger-ui:latest@sha256:3b4f51470fed56b1ce5a064f57ce7a0d585f50192731f458e7b376713b286d57
     environment:
       SWAGGER_JSON_URL: /specs/dzhura.yaml
       BASE_URL: /swagger
