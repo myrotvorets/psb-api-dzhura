@@ -16,11 +16,13 @@ describe('environment', function () {
         const expected: Environment = {
             NODE_ENV: 'development',
             PORT: 3000,
+            IMAGE_CDN_PREFIX: 'https://cdn.example.com/',
         };
 
         process.env = {
             NODE_ENV: `${expected.NODE_ENV}`,
             PORT: `${expected.PORT}`,
+            IMAGE_CDN_PREFIX: `${expected.IMAGE_CDN_PREFIX}`,
             EXTRA: 'xxx',
         };
 
@@ -32,11 +34,13 @@ describe('environment', function () {
         const expected: Environment = {
             NODE_ENV: 'staging',
             PORT: 3030,
+            IMAGE_CDN_PREFIX: 'https://cdn.example.com/',
         };
 
         process.env = {
             NODE_ENV: `${expected.NODE_ENV}`,
             PORT: `${expected.PORT}`,
+            IMAGE_CDN_PREFIX: `${expected.IMAGE_CDN_PREFIX}`,
         };
 
         let actual = { ...environment(true) };
@@ -45,6 +49,7 @@ describe('environment', function () {
         process.env = {
             NODE_ENV: `${expected.NODE_ENV}${expected.NODE_ENV}`,
             PORT: `1${expected.PORT}`,
+            IMAGE_CDN_PREFIX: `${expected.IMAGE_CDN_PREFIX}`,
         };
 
         actual = { ...environment() };

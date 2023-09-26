@@ -139,7 +139,8 @@ describe('SearchService', function () {
         // eslint-disable-next-line mocha/no-setup-in-describe
         table1.forEach((name) =>
             it(`should return null when prepareName returns falsy value ('${name}')`, function () {
-                return expect(SearchService.search(name)).to.eventually.be.null;
+                const svc = new SearchService('https://cdn.example.com/');
+                return expect(svc.search(name)).to.eventually.be.null;
             }),
         );
 
@@ -167,7 +168,8 @@ describe('SearchService', function () {
             });
 
             tracker.install();
-            return expect(SearchService.search('Путин Владимир')).to.become([]);
+            const svc = new SearchService('https://cdn.example.com/');
+            return expect(svc.search('Путин Владимир')).to.become([]);
         });
 
         it('should return the expected results', function () {
@@ -201,7 +203,8 @@ describe('SearchService', function () {
             });
 
             tracker.install();
-            return expect(SearchService.search('Our mock will find everything')).to.become(resultItems);
+            const svc = new SearchService('https://cdn.myrotvorets.center/m/');
+            return expect(svc.search('Our mock will find everything')).to.become(resultItems);
         });
     });
 });

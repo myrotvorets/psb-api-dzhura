@@ -16,7 +16,13 @@ export interface SearchItem {
 }
 
 export class SearchService {
-    public static async search(name: string): Promise<SearchItem[] | null> {
+    private readonly _cdnPrefix: string;
+
+    public constructor(cdnPrefix: string) {
+        this._cdnPrefix = cdnPrefix;
+    }
+
+    public async search(name: string): Promise<SearchItem[] | null> {
         const n = SearchService.prepareName(name);
         if (!n) {
             return null;
@@ -35,13 +41,13 @@ export class SearchService {
 
         if (rows) {
             const thumbs = SearchService.getThumbnails(atts);
-            return SearchService.prepareResult(rows, thumbs);
+            return this.prepareResult(rows, thumbs);
         }
 
         return [];
     }
 
-    private static prepareResult(criminals: Criminal[], thumbs: Record<number, string>): SearchItem[] {
+    private prepareResult(criminals: Criminal[], thumbs: Record<number, string>): SearchItem[] {
         return criminals.map((item) => {
             const entry: SearchItem = {
                 id: item.id,
@@ -61,7 +67,7 @@ export class SearchService {
             }
 
             if (typeof thumbs[item.id] !== 'undefined') {
-                entry.thumbnail = `https://cdn.myrotvorets.center/m/${thumbs[item.id]}`;
+                entry.thumbnail = `${this._cdnPrefix}${thumbs[item.id]}`;
             }
 
             return entry;
