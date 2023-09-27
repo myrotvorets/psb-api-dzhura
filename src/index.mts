@@ -3,4 +3,4 @@ import './lib/tracing.mjs';
 import { run } from './server.mjs';
 
 run().catch((e) => console.error(e));
-/* c8 ignore end */
+/* c8 ignore stop */

@@ -91,4 +91,4 @@ export async function run(): Promise<void> {
 
     server.listen(env.PORT);
 }
-/* c8 ignore end */
+/* c8 ignore stop */

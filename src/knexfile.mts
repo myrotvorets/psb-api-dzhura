@@ -53,4 +53,4 @@ export function buildKnexConfig(environment: NodeJS.Dict<string> = process.env):
         },
     };
 }
-/* c8 ignore end */
+/* c8 ignore stop */
