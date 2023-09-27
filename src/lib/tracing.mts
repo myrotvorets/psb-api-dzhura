@@ -11,7 +11,12 @@ if (!+(process.env.ENABLE_TRACING || 0)) {
 
 const configurator = new OpenTelemetryConfigurator({
     serviceName: 'psb-api-identigraf',
-    instrumentations: [new ExpressInstrumentation(), new HttpInstrumentation(), new KnexInstrumentation(), new MySQL2Instrumentation()],
+    instrumentations: [
+        new ExpressInstrumentation(),
+        new HttpInstrumentation(),
+        new KnexInstrumentation(),
+        new MySQL2Instrumentation(),
+    ],
 });
 
 configurator.start();
