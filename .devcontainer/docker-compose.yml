@@ -45,7 +45,7 @@ services:
     restart: always
 
   swagger:
-    image: swaggerapi/swagger-ui:latest@sha256:3b4f51470fed56b1ce5a064f57ce7a0d585f50192731f458e7b376713b286d57
+    image: swaggerapi/swagger-ui:latest@sha256:c17153d23b81490d9b1d56bb26448b44b2fd43e46e8656ccb6af34eceb291a79
     environment:
       SWAGGER_JSON_URL: /specs/dzhura.yaml
       BASE_URL: /swagger
