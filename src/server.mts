@@ -16,22 +16,25 @@ import { monitoringController } from './controllers/monitoring.mjs';
 
 export async function configureApp(app: Express): Promise<void> {
     const env = environment();
+    const base = dirname(fileURLToPath(import.meta.url));
 
-    if (env.NODE_ENV !== 'production') {
-        app.use(
-            '/specs/',
-            staticMiddleware(join(dirname(fileURLToPath(import.meta.url)), 'specs'), {
-                acceptRanges: false,
-                index: false,
-            }),
-        );
-    }
+    await installOpenApiValidator(join(base, 'specs', 'dzhura.yaml'), app, env.NODE_ENV, {
+        ignorePaths: /^(\/$|\/specs\/)/u,
+    });
 
-    await installOpenApiValidator(
-        join(dirname(fileURLToPath(import.meta.url)), 'specs', 'dzhura.yaml'),
-        app,
-        env.NODE_ENV,
+    app.use(
+        '/specs/',
+        staticMiddleware(join(base, 'specs'), {
+            acceptRanges: false,
+            index: false,
+        }),
     );
+
+    /* c8 ignore start */
+    if (process.env.HAVE_SWAGGER === 'true') {
+        app.get('/', (_req, res) => res.redirect('/swagger/'));
+    }
+    /* c8 ignore stop */
 
     app.use('/', searchController());
     app.use('/', notFoundMiddleware);

@@ -4,19 +4,20 @@ services:
       context: .docker/dzhura
       dockerfile: Dockerfile
     environment:
-      NODE_ENV: development
-      NO_UPDATE_NOTIFIER: 'true'
-      NPM_CONFIG_FUND: '0'
-      SUPPRESS_SUPPORT: '1'
-      HTTPS: '0'
-      PORT: '3000'
-      ENABLE_TRACING: '1'
-      ZIPKIN_ENDPOINT: http://zipkin:9411/api/v2/spans
-      MYSQL_DATABASE: myrotvorets
-      MYSQL_USER: myro
-      MYSQL_PASSWORD: pass
-      MYSQL_HOST: mariadb
-      MYSQL_CONN_LIMIT: '3'
+      - NODE_ENV=development
+      - NO_UPDATE_NOTIFIER=true
+      - NPM_CONFIG_FUND=0
+      - SUPPRESS_SUPPORT=1
+      - HTTPS=0
+      - PORT=3000
+      - ENABLE_TRACING=1
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
+      - HAVE_SWAGGER=true
+      - MYSQL_DATABASE=myrotvorets
+      - MYSQL_USER=myro
+      - MYSQL_PASSWORD=pass
+      - MYSQL_HOST=mariadb
+      - MYSQL_CONN_LIMIT=3
     restart: always
     volumes:
       - "../:/usr/src/service"
@@ -25,19 +26,20 @@ services:
   mariadb:
     image: mariadb:11@sha256:5d851e999b84625ef9810589e832686cae58453452698ee69e2980041e626eb2
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: myrotvorets
-      MYSQL_USER: myro
-      MYSQL_PASSWORD: pass
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=myrotvorets
+      - MYSQL_USER=myro
+      - MYSQL_PASSWORD=pass
     restart: always
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./.docker/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer:latest@sha256:40c1d6691703a8ca102dc108c4a6fc11863e928b6ae6014fb8557b6e083a29ff
     environment:
-      ADMINER_DEFAULT_SERVER: mariadb
+      - ADMINER_DEFAULT_SERVER=mariadb
     restart: always
 
   zipkin:
@@ -47,8 +49,14 @@ services:
   swagger:
     image: swaggerapi/swagger-ui:latest@sha256:c17153d23b81490d9b1d56bb26448b44b2fd43e46e8656ccb6af34eceb291a79
     environment:
-      SWAGGER_JSON_URL: /specs/dzhura.yaml
-      BASE_URL: /swagger
+      - SWAGGER_JSON_URL=/specs/dzhura.yaml
+      - BASE_URL=/swagger
+      - DISPLAY_REQUEST_DURATION=true
+      - DEFAULT_MODELS_EXPAND_DEPTH=100
+      - DEFAULT_MODEL_EXPAND_DEPTH=100
+      - DEEP_LINKING=true
+      - VALIDATOR_URL=none
+    restart: always
 
 volumes:
   mysql_data:

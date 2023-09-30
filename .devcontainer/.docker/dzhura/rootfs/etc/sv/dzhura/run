@@ -4,6 +4,9 @@ set -e
 exec 2>&1
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+SERVICE_USER="${CONTAINER_USER:-vscode}"
 
-install -d -o vscode -g vscode -m 0755 /var/log/dzhura
-exec sudo -u vscode -H /usr/local/bin/start-dzhura.sh > /var/log/dzhura/start.log 2>&1
+: "${SERVICE_NAME:?}"
+
+install -d -o "${SERVICE_USER}" -g "${SERVICE_USER}" -m 0755 "/var/log/${SERVICE_NAME}"
+exec sudo -u "${SERVICE_USER}" -H /usr/local/bin/start-service.sh > "/var/log/${SERVICE_NAME}/start.log" 2>&1

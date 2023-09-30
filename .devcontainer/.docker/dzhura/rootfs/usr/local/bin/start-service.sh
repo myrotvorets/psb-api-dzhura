@@ -2,6 +2,8 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+: "${SERVICE_NAME:?}"
+
 cd /usr/src/service || exit 1
 
 if [ ! -f src/specs/dzhura.yaml ] && [ -d .git ]; then
@@ -23,4 +25,4 @@ fi
 
 npm run wait-for-mysql
 npx --no-install ts-node ./test/migrate.mts
-npm run start:dev 2>&1 | tee -a /var/log/dzhura/dzhura.log
+npm run start:dev 2>&1 | tee -a "/var/log/${SERVICE_NAME}/${SERVICE_NAME}.log"
