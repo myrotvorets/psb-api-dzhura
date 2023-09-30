@@ -69,10 +69,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/myrotvorets/psb-api-microservice-dzhura.git"
+    "url": "git+https://github.com/myrotvorets/psb-api-dzhura.git"
   },
   "bugs": {
-    "url": "https://github.com/myrotvorets/psb-api-microservice-dzhura/issues"
+    "url": "https://github.com/myrotvorets/psb-api-dzhura/issues"
   },
-  "homepage": "https://github.com/myrotvorets/psb-api-microservice-dzhura#readme"
+  "homepage": "https://github.com/myrotvorets/psb-api-dzhura#readme"
 }

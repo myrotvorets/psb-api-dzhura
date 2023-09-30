@@ -32,7 +32,7 @@
     "customizations": {
         "codespaces": {
             "repositories": {
-                "myrotvorets/psb-api-microservice-dzhura": {
+                "myrotvorets/psb-api-dzhura": {
                     "permissions": {
                         "packages": "read"
                     }
