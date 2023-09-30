@@ -18,7 +18,7 @@ export async function configureApp(app: Express): Promise<void> {
     const env = environment();
     const base = dirname(fileURLToPath(import.meta.url));
 
-    await installOpenApiValidator(join(base, 'specs', 'dzhura.yaml'), app, env.NODE_ENV, {
+    await installOpenApiValidator(join(base, 'specs', 'dzhura-private.yaml'), app, env.NODE_ENV, {
         ignorePaths: /^(\/$|\/specs\/)/u,
     });
 

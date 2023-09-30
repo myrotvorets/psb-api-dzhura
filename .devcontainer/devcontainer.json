@@ -46,7 +46,10 @@
                 "esbenp.prettier-vscode",
                 "timonwong.shellcheck",
                 "ms-azuretools.vscode-docker",
-                "zhiayang.tabindentspacealign"
+                "zhiayang.tabindentspacealign",
+                "42Crunch.vscode-openapi",
+                "natqe.reload",
+                "redhat.vscode-yaml"
             ],
             "settings": {
                 "files.autoSave": "onWindowChange"
