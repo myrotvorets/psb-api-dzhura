@@ -49,7 +49,7 @@ services:
   swagger:
     image: swaggerapi/swagger-ui:latest@sha256:c17153d23b81490d9b1d56bb26448b44b2fd43e46e8656ccb6af34eceb291a79
     environment:
-      - SWAGGER_JSON_URL=/specs/dzhura.yaml
+      - SWAGGER_JSON_URL=/specs/dzhura-private.yaml
       - BASE_URL=/swagger
       - DISPLAY_REQUEST_DURATION=true
       - DEFAULT_MODELS_EXPAND_DEPTH=100
