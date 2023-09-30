@@ -1,4 +1,4 @@
-FROM ghcr.io/sjinks/codespaces/alpine-base:latest@sha256:76467407c0021602244c5d8b97469d13828b91f77bf05536aa6aa41e3cfed6ee
+FROM ghcr.io/sjinks/codespaces/alpine-base:latest@sha256:31cf3a267c59a9887acd0d68c62c46bc808c53e78debe87492f56ef84a019632
 
 RUN \
     apk add --no-cache nodejs npm python3 make g++ nginx
