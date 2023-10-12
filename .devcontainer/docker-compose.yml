@@ -37,7 +37,7 @@ services:
       - ./.docker/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   adminer:
-    image: adminer:latest@sha256:40c1d6691703a8ca102dc108c4a6fc11863e928b6ae6014fb8557b6e083a29ff
+    image: adminer:latest@sha256:81844f7d3628e9750445abdb43ff6e8f94bf892fb32b1f8a965262f6eee3643f
     environment:
       - ADMINER_DEFAULT_SERVER=mariadb
     restart: always
