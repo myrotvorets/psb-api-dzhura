@@ -1,4 +1,4 @@
-FROM ghcr.io/sjinks/codespaces/nodejs:latest@sha256:04805972fe280ba8a0e7951e101f5139316f123b79542d0e38073d861cda3a8a
+FROM ghcr.io/sjinks/codespaces/nodejs:latest@sha256:aaa065a0c80c3fb4a11fe38f3a4f16a883d5f36bf5fd5ec2fe51de665f7ca3f1
 
 ENV SERVICE_NAME dzhura
 
