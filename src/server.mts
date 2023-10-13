@@ -31,7 +31,7 @@ export async function configureApp(app: Express): Promise<void> {
     );
 
     /* c8 ignore start */
-    if (process.env.HAVE_SWAGGER === 'true') {
+    if (process.env['HAVE_SWAGGER'] === 'true') {
         app.get('/', (_req, res) => res.redirect('/swagger/'));
     }
     /* c8 ignore stop */
@@ -47,7 +47,7 @@ export function setupApp(): Express {
     app.set('strict routing', true);
     app.set('x-powered-by', false);
 
-    if (process.env.SKIP_REQUEST_LOGGING !== '1') {
+    if (process.env['SKIP_REQUEST_LOGGING'] !== '1') {
         app.use(
             morgan(
                 '[PSBAPI-dzhura] :req[X-Request-ID]\t:method\t:url\t:status :res[content-length]\t:date[iso]\t:response-time\t:total-time',

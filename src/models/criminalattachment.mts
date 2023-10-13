@@ -6,9 +6,9 @@ export class CriminalAttachment extends Model {
     public path!: string;
     public mime_type!: string;
 
-    public static tableName = 'criminal_attachments';
+    public static override tableName = 'criminal_attachments';
 
-    public static modifiers: Modifiers<QueryBuilder<Model>> = {
+    public static override modifiers: Modifiers<QueryBuilder<CriminalAttachment>> = {
         findByIds(builder, ids: number[]): void {
             void builder.whereIn('id', ids).andWhere('mime_type', 'LIKE', 'image/%').orderBy(['id', 'sort_order']);
         },

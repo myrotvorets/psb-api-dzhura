@@ -38,7 +38,7 @@ describe('SearchService', function () {
         // eslint-disable-next-line mocha/no-setup-in-describe
         table1.forEach(([input, expected]) =>
             it(`should discard names having less than two unique lexemes ('${input}')`, function () {
-                return tester(input, expected);
+                tester(input, expected);
             }),
         );
 
@@ -52,7 +52,7 @@ describe('SearchService', function () {
         // eslint-disable-next-line mocha/no-setup-in-describe
         table2.forEach(([input, expected]) =>
             it(`should correctly handle names with two lexemes ('${input}' => '${expected}')`, function () {
-                return tester(input, expected);
+                tester(input, expected);
             }),
         );
 
@@ -70,7 +70,7 @@ describe('SearchService', function () {
         // eslint-disable-next-line mocha/no-setup-in-describe
         table3.forEach(([input, expected]) =>
             it(`should correctly handle names with more than two lexemes ('${input}' => '${expected}')`, function () {
-                return tester(input, expected);
+                tester(input, expected);
             }),
         );
     });

@@ -10,9 +10,9 @@ export class Criminal extends Model {
     public address!: string;
     public description!: string;
 
-    public static tableName = 'criminals';
+    public static override tableName = 'criminals';
 
-    public static modifiers: Modifiers<QueryBuilder<Model>> = {
+    public static override modifiers: Modifiers<QueryBuilder<Criminal>> = {
         searchByName(builder, s: string, n: number): void {
             void builder
                 .where('active', 1)

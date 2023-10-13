@@ -19,7 +19,7 @@ try {
     process.stdout.write('Creating tables\n');
     await db.migrate.latest();
 
-    if (process.env.SEED_TABLES === 'yes') {
+    if (process.env['SEED_TABLES'] === 'yes') {
         process.stdout.write('Populating tables\n');
         await db.seed.run();
     }
