@@ -24,7 +24,7 @@
     "@cloudnative/health-connect": "^2.1.0",
     "@myrotvorets/create-server": "^2.2.0",
     "@myrotvorets/express-async-middleware-wrapper": "^2.2.0",
-    "@myrotvorets/express-microservice-middlewares": "^1.6.0",
+    "@myrotvorets/express-microservice-middlewares": "^2.0.0",
     "@myrotvorets/oav-installer": "^4.1.0",
     "@myrotvorets/opentelemetry-configurator": "^6.4.1",
     "@myrotvorets/opentelemetry-plugin-knex": "^0.30.0",
