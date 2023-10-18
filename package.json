@@ -41,7 +41,7 @@
     "@myrotvorets/eslint-config-myrotvorets-ts": "^2.22.5",
     "@types/chai": "^4.3.8",
     "@types/chai-as-promised": "^7.1.6",
-    "@types/express": "^4.17.19",
+    "@types/express": "^4.17.20",
     "@types/mocha": "^10.0.2",
     "@types/mock-knex": "^0.4.6",
     "@types/morgan": "^1.9.6",
