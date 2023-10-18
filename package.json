@@ -42,7 +42,7 @@
     "@types/chai": "^4.3.9",
     "@types/chai-as-promised": "^7.1.7",
     "@types/express": "^4.17.20",
-    "@types/mocha": "^10.0.2",
+    "@types/mocha": "^10.0.3",
     "@types/mock-knex": "^0.4.6",
     "@types/morgan": "^1.9.6",
     "@types/multer": "^1.4.8",
