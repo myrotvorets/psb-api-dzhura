@@ -40,6 +40,7 @@ export class SearchService implements SearchServiceInterface {
                 const attachments = await criminalAttachment.byIds(ids);
                 return [criminals, attachments];
             },
+            { readOnly: true },
         );
 
         if (rows.length) {

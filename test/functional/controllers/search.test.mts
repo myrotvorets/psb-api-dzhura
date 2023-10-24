@@ -75,7 +75,7 @@ describe('SearchController', function () {
         it('should return the result in the expected format', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
-                const responses = [[], criminalResponse, attachmentResponse, []];
+                const responses = [[], [], criminalResponse, attachmentResponse, []];
                 query.response(responses[step - 1]);
             });
 

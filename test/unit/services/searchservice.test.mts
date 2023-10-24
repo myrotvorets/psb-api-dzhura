@@ -147,14 +147,15 @@ describe('SearchService', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
                 switch (step) {
-                    case 1: // BEGIN
-                    case 3: // COMMIT
+                    case 1: // SET TRANSACTION READ ONLY
+                    case 2: // BEGIN
+                    case 4: // COMMIT
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.be.undefined;
                         query.response([]);
                         break;
 
-                    case 2:
+                    case 3:
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.equal('select');
                         expect(query.bindings).to.have.length(4);
@@ -174,21 +175,22 @@ describe('SearchService', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
                 switch (step) {
-                    case 1: // BEGIN
-                    case 4: // COMMIT
+                    case 1: // SET TRANSACTION READ ONLY
+                    case 2: // BEGIN
+                    case 5: // COMMIT
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.be.undefined;
                         query.response([]);
                         break;
 
-                    case 2:
+                    case 3:
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.equal('select');
                         expect(query.bindings).to.have.length(4);
                         query.response(criminalResponse);
                         break;
 
-                    case 3:
+                    case 4:
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.equal('select');
                         expect(query.bindings).to.have.length(3);
