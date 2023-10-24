@@ -1,25 +1,26 @@
-import { Model } from 'objection';
 import { autoP, makeClickable } from '../lib/textutils.mjs';
 import { Criminal } from '../models/criminal.mjs';
 import { CriminalAttachment } from '../models/criminalattachment.mjs';
+import { ModelService } from './modelservice.mjs';
+import type { SearchItem, SearchServiceInterface } from './searchserviceinterface.mjs';
 
-export interface SearchItem {
-    id: number;
-    link: string;
-    name: string;
-    nname: string;
-    dob?: string;
-    country?: string;
-    address?: string;
-    description: string;
-    thumbnail?: string;
+export type { SearchItem };
+
+interface SearchServiceOptions {
+    modelService: ModelService;
+    cdnPrefix: string;
+    urlPrefix: string;
 }
 
-export class SearchService {
-    private readonly _cdnPrefix: string;
+export class SearchService implements SearchServiceInterface {
+    private readonly cdnPrefix: string;
+    private readonly modelService: ModelService;
+    private readonly urlPrefix: string;
 
-    public constructor(cdnPrefix: string) {
-        this._cdnPrefix = cdnPrefix;
+    public constructor({ cdnPrefix, modelService, urlPrefix }: SearchServiceOptions) {
+        this.cdnPrefix = cdnPrefix;
+        this.modelService = modelService;
+        this.urlPrefix = urlPrefix;
     }
 
     public async search(name: string): Promise<SearchItem[] | null> {
@@ -28,18 +29,21 @@ export class SearchService {
             return null;
         }
 
-        const [rows, atts] = await Model.transaction(async (trx) => {
-            const criminals = await Criminal.query(trx).modify('searchByName', n, 10);
-            if (!criminals.length) {
-                return [null, null];
-            }
+        const [rows, atts] = await this.modelService.transaction<[Criminal[], CriminalAttachment[]]>(
+            async (_trx, { criminal, criminalAttachment }) => {
+                const criminals = await criminal.searchByName(n, 10);
+                if (!criminals.length) {
+                    return [[], []];
+                }
 
-            const ids = criminals.map((x) => x.id);
-            const attachments = await CriminalAttachment.query(trx).modify('findByIds', ids);
-            return [criminals, attachments];
-        });
+                const ids = criminals.map((x) => x.id);
+                const attachments = await criminalAttachment.byIds(ids);
+                return [criminals, attachments];
+            },
+            { readOnly: true },
+        );
 
-        if (rows) {
+        if (rows.length) {
             const thumbs = SearchService.getThumbnails(atts);
             return this.prepareResult(rows, thumbs);
         }
@@ -53,7 +57,7 @@ export class SearchService {
                 id: item.id,
                 name: item.name,
                 nname: item.nname,
-                link: item.link,
+                link: `${this.urlPrefix}${item.slug}/`,
                 description: autoP(makeClickable(item.description)),
             };
 
@@ -67,7 +71,7 @@ export class SearchService {
             }
 
             if (typeof thumbs[item.id] !== 'undefined') {
-                entry.thumbnail = `${this._cdnPrefix}${thumbs[item.id]}`;
+                entry.thumbnail = `${this.cdnPrefix}${thumbs[item.id]}`;
             }
 
             return entry;

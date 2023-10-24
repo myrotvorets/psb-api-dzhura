@@ -1,16 +1,35 @@
-import { Model, type Modifiers, type QueryBuilder } from 'objection';
+import type { Knex } from 'knex';
 
-export class CriminalAttachment extends Model {
-    public id!: number;
-    public att_id!: number;
-    public path!: string;
-    public mime_type!: string;
+export interface CriminalAttachment {
+    id: number;
+    att_id: number;
+    path: string;
+    mime_type: string;
+}
 
-    public static override tableName = 'criminal_attachments';
+interface ModelOptions {
+    db: Knex<CriminalAttachment, CriminalAttachment[]> | Knex.Transaction<CriminalAttachment, CriminalAttachment[]>;
+}
 
-    public static override modifiers: Modifiers<QueryBuilder<CriminalAttachment>> = {
-        findByIds(builder, ids: number[]): void {
-            void builder.whereIn('id', ids).andWhere('mime_type', 'LIKE', 'image/%').orderBy(['id', 'sort_order']);
-        },
-    };
+export class CriminalAttachmentModel {
+    public static readonly tableName = 'criminal_attachments';
+
+    private readonly db: Knex<CriminalAttachment, CriminalAttachment[]>;
+
+    public constructor({ db }: ModelOptions) {
+        this.db = db;
+    }
+
+    public byIds(ids: number[]): Promise<CriminalAttachment[]> {
+        return this.db(CriminalAttachmentModel.tableName)
+            .whereIn('id', ids)
+            .andWhere('mime_type', 'LIKE', 'image/%')
+            .orderBy(['id', 'sort_order']);
+    }
+}
+
+declare module 'knex/types/tables.js' {
+    interface Tables {
+        [CriminalAttachmentModel.tableName]: CriminalAttachment;
+    }
 }

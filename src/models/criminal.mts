@@ -1,28 +1,40 @@
-import { Model, type Modifiers, type QueryBuilder } from 'objection';
+import type { Knex } from 'knex';
 
-export class Criminal extends Model {
-    public id!: number;
-    public slug!: string;
-    public name!: string;
-    public nname!: string;
-    public dob!: string;
-    public country!: string;
-    public address!: string;
-    public description!: string;
+export interface Criminal {
+    id: number;
+    slug: string;
+    name: string;
+    nname: string;
+    dob: string;
+    country: string;
+    address: string;
+    description: string;
+}
 
-    public static override tableName = 'criminals';
+interface ModelOptions {
+    db: Knex<Criminal, Criminal[]> | Knex.Transaction<Criminal, Criminal[]>;
+}
 
-    public static override modifiers: Modifiers<QueryBuilder<Criminal>> = {
-        searchByName(builder, s: string, n: number): void {
-            void builder
-                .where('active', 1)
-                .andWhereRaw('MATCH (sname) AGAINST (? IN BOOLEAN MODE)', s)
-                .orderByRaw(`MATCH (sname) AGAINST (? IN BOOLEAN MODE) DESC`, s)
-                .limit(n);
-        },
-    };
+export class CriminalModel {
+    public static readonly tableName = 'criminals';
 
-    public get link(): string {
-        return `https://myrotvorets.center/criminal/${this.slug}/`;
+    private readonly db: Knex<Criminal, Criminal[]>;
+
+    public constructor({ db }: ModelOptions) {
+        this.db = db;
+    }
+
+    public searchByName(s: string, n: number): Promise<Criminal[]> {
+        return this.db(CriminalModel.tableName)
+            .where('active', 1)
+            .andWhereRaw('MATCH (sname) AGAINST (? IN BOOLEAN MODE)', s)
+            .orderByRaw(`MATCH (sname) AGAINST (? IN BOOLEAN MODE) DESC`, s)
+            .limit(n);
+    }
+}
+
+declare module 'knex/types/tables.js' {
+    interface Tables {
+        [CriminalModel.tableName]: Criminal;
     }
 }

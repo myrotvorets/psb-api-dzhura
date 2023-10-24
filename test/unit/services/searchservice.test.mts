@@ -1,13 +1,12 @@
 /* eslint-disable import/no-named-as-default-member */
 import { expect } from 'chai';
 import mockKnex from 'mock-knex';
-import * as knexpkg from 'knex';
-import { Model } from 'objection';
-import { SearchService } from '../../../src/services/search.mjs';
-import { buildKnexConfig } from '../../../src/knexfile.mjs';
+import { container, initializeContainer } from '../../../src/lib/container.mjs';
+import { SearchService } from '../../../src/services/searchservice.mjs';
+import { SearchServiceInterface } from '../../../src/services/searchserviceinterface.mjs';
+import { CriminalAttachment } from '../../../src/models/criminalattachment.mjs';
 import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.mjs';
 import { resultItems } from '../../fixtures/results.mjs';
-import { CriminalAttachment } from '../../../src/models/criminalattachment.mjs';
 
 class MySearchService extends SearchService {
     public static testPrepareName(name: string): string | null {
@@ -78,13 +77,13 @@ describe('SearchService', function () {
     describe('getThumbnails', function () {
         it('should insert -150x150 suffix', function () {
             const input: CriminalAttachment[] = [
-                CriminalAttachment.fromJson({ id: 1, att_id: 2, path: 'some/file.png', mime_type: 'image/png' }),
-                CriminalAttachment.fromJson({
+                { id: 1, att_id: 2, path: 'some/file.png', mime_type: 'image/png' },
+                {
                     id: 3,
                     att_id: 4,
                     path: 'another/filename.jpg',
                     mime_type: 'image/jpeg',
-                }),
+                },
             ];
 
             const expected: Record<number, string> = {
@@ -97,8 +96,8 @@ describe('SearchService', function () {
 
         it('should use the first attachment for the criminal', function () {
             const input: CriminalAttachment[] = [
-                CriminalAttachment.fromJson({ id: 1, att_id: 2, path: '1.png', mime_type: 'image/png' }),
-                CriminalAttachment.fromJson({ id: 1, att_id: 3, path: '2.jpg', mime_type: 'image/jpeg' }),
+                { id: 1, att_id: 2, path: '1.png', mime_type: 'image/png' },
+                { id: 1, att_id: 3, path: '2.jpg', mime_type: 'image/jpeg' },
             ];
 
             const expected: Record<number, string> = {
@@ -110,21 +109,22 @@ describe('SearchService', function () {
     });
 
     describe('search', function () {
-        let db: knexpkg.Knex;
+        let service: SearchServiceInterface;
 
-        before(function () {
-            const { knex } = knexpkg.default;
-            db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
+        before(async function () {
+            await container.dispose();
+            initializeContainer();
+            mockKnex.mock(container.resolve('db'));
+            service = container.resolve('searchService');
         });
 
-        beforeEach(function () {
-            mockKnex.mock(db);
-            Model.knex(db);
+        after(function () {
+            mockKnex.unmock(container.resolve('db'));
+            return container.dispose();
         });
 
         afterEach(function () {
             mockKnex.getTracker().uninstall();
-            mockKnex.unmock(db);
         });
 
         const table1 = [
@@ -139,8 +139,7 @@ describe('SearchService', function () {
         // eslint-disable-next-line mocha/no-setup-in-describe
         table1.forEach((name) =>
             it(`should return null when prepareName returns falsy value ('${name}')`, function () {
-                const svc = new SearchService('https://cdn.example.com/');
-                return expect(svc.search(name)).to.eventually.be.null;
+                return expect(service.search(name)).to.eventually.be.null;
             }),
         );
 
@@ -148,14 +147,15 @@ describe('SearchService', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
                 switch (step) {
-                    case 1: // BEGIN
-                    case 3: // COMMIT
+                    case 1: // SET TRANSACTION READ ONLY
+                    case 2: // BEGIN
+                    case 4: // COMMIT
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.be.undefined;
                         query.response([]);
                         break;
 
-                    case 2:
+                    case 3:
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.equal('select');
                         expect(query.bindings).to.have.length(4);
@@ -168,29 +168,29 @@ describe('SearchService', function () {
             });
 
             tracker.install();
-            const svc = new SearchService('https://cdn.example.com/');
-            return expect(svc.search('Путин Владимир')).to.become([]);
+            return expect(service.search('Путин Владимир')).to.become([]);
         });
 
         it('should return the expected results', function () {
             const tracker = mockKnex.getTracker();
             tracker.on('query', (query, step) => {
                 switch (step) {
-                    case 1: // BEGIN
-                    case 4: // COMMIT
+                    case 1: // SET TRANSACTION READ ONLY
+                    case 2: // BEGIN
+                    case 5: // COMMIT
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.be.undefined;
                         query.response([]);
                         break;
 
-                    case 2:
+                    case 3:
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.equal('select');
                         expect(query.bindings).to.have.length(4);
                         query.response(criminalResponse);
                         break;
 
-                    case 3:
+                    case 4:
                         expect(query.transacting).to.be.true;
                         expect(query.method).to.equal('select');
                         expect(query.bindings).to.have.length(3);
@@ -203,8 +203,7 @@ describe('SearchService', function () {
             });
 
             tracker.install();
-            const svc = new SearchService('https://cdn.myrotvorets.center/m/');
-            return expect(svc.search('Our mock will find everything')).to.become(resultItems);
+            return expect(service.search('Our mock will find everything')).to.become(resultItems);
         });
     });
 });

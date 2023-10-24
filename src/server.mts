@@ -1,83 +1,60 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import express, { type Express, static as staticMiddleware } from 'express';
-import * as knexpkg from 'knex';
-import { Model } from 'objection';
+import express, { type Express } from 'express';
 import { installOpenApiValidator } from '@myrotvorets/oav-installer';
 import { errorMiddleware, notFoundMiddleware } from '@myrotvorets/express-microservice-middlewares';
-import { createServer } from '@myrotvorets/create-server';
-import morgan from 'morgan';
+import { createServer, getTracer, recordErrorToSpan } from '@myrotvorets/otel-utils';
 
-import { buildKnexConfig } from './knexfile.mjs';
-import { environment } from './lib/environment.mjs';
+import { initializeContainer, scopedContainerMiddleware } from './lib/container.mjs';
+import { requestDurationMiddleware } from './middleware/duration.mjs';
+import { loggerMiddleware } from './middleware/logger.mjs';
 
 import { searchController } from './controllers/search.mjs';
 import { monitoringController } from './controllers/monitoring.mjs';
 
-export async function configureApp(app: Express): Promise<void> {
-    const env = environment();
-    const base = dirname(fileURLToPath(import.meta.url));
+export async function configureApp(app: Express): Promise<ReturnType<typeof initializeContainer>> {
+    return getTracer().startActiveSpan(
+        'configureApp',
+        async (span): Promise<ReturnType<typeof initializeContainer>> => {
+            try {
+                const container = initializeContainer();
+                const env = container.resolve('environment');
+                const base = dirname(fileURLToPath(import.meta.url));
+                const db = container.resolve('db');
 
-    await installOpenApiValidator(join(base, 'specs', 'dzhura-private.yaml'), app, env.NODE_ENV, {
-        ignorePaths: /^(\/$|\/specs\/)/u,
-    });
+                app.use(requestDurationMiddleware, scopedContainerMiddleware, loggerMiddleware);
+                app.use('/monitoring', monitoringController(db));
 
-    app.use(
-        '/specs/',
-        staticMiddleware(join(base, 'specs'), {
-            acceptRanges: false,
-            index: false,
-        }),
+                await installOpenApiValidator(join(base, 'specs', 'dzhura-private.yaml'), app, env.NODE_ENV);
+
+                app.use(searchController(), notFoundMiddleware, errorMiddleware);
+                return container;
+            } /* c8 ignore start */ catch (e) {
+                recordErrorToSpan(e, span);
+                throw e;
+            } /* c8 ignore stop */ finally {
+                span.end();
+            }
+        },
     );
-
-    /* c8 ignore start */
-    if (process.env['HAVE_SWAGGER'] === 'true') {
-        app.get('/', (_req, res) => res.redirect('/swagger/'));
-    }
-    /* c8 ignore stop */
-
-    app.use('/', searchController());
-    app.use('/', notFoundMiddleware);
-    app.use(errorMiddleware);
 }
 
-/* c8 ignore start */
-export function setupApp(): Express {
+export function createApp(): Express {
     const app = express();
     app.set('strict routing', true);
+    app.set('case sensitive routing', true);
     app.set('x-powered-by', false);
-
-    if (process.env['SKIP_REQUEST_LOGGING'] !== '1') {
-        app.use(
-            morgan(
-                '[PSBAPI-dzhura] :req[X-Request-ID]\t:method\t:url\t:status :res[content-length]\t:date[iso]\t:response-time\t:total-time',
-            ),
-        );
-    }
-
+    app.set('trust proxy', true);
     return app;
 }
 
-function setupKnex(): knexpkg.Knex {
-    const { knex } = knexpkg.default;
-    const db = knex(buildKnexConfig());
-    Model.knex(db);
-    return db;
-}
-
+/* c8 ignore start */
 export async function run(): Promise<void> {
-    const [env, app, db] = [environment(), setupApp(), setupKnex()];
-
-    app.use('/monitoring', monitoringController(db));
-
-    await configureApp(app);
+    const app = createApp();
+    const container = await configureApp(app);
+    const env = container.resolve('environment');
 
     const server = await createServer(app);
-
-    server.on('close', () => {
-        db.destroy().catch((e) => console.error('Failed to close database connection', e));
-    });
-
     server.listen(env.PORT);
 }
 /* c8 ignore stop */

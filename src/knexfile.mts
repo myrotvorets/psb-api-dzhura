@@ -6,50 +6,51 @@ import type { Knex } from 'knex';
 
 interface DbEnv {
     NODE_ENV: string;
-    MYSQL_DATABASE: string;
-    MYSQL_HOST: string;
-    MYSQL_USER: string;
-    MYSQL_PASSWORD: string;
-    MYSQL_CONN_LIMIT: number;
+    KNEX_DATABASE: string;
+    KNEX_HOST: string;
+    KNEX_USER: string;
+    KNEX_PASSWORD: string;
+    KNEX_CONN_LIMIT: number;
 }
 
 function getEnvironment(environment: NodeJS.Dict<string>): Readonly<DbEnv> {
     return cleanEnv(environment, {
         NODE_ENV: str({ default: 'development' }),
-        MYSQL_DATABASE: str(),
-        MYSQL_HOST: str({ default: 'localhost' }),
-        MYSQL_USER: str({ default: '' }),
-        MYSQL_PASSWORD: str({ default: '' }),
-        MYSQL_CONN_LIMIT: num({ default: 2 }),
+        KNEX_DATABASE: str(),
+        KNEX_HOST: str({ default: 'localhost' }),
+        KNEX_USER: str({ default: '' }),
+        KNEX_PASSWORD: str({ default: '' }),
+        KNEX_CONN_LIMIT: num({ default: 2 }),
     });
 }
 
 export function buildKnexConfig(environment: NodeJS.Dict<string> = process.env): Knex.Config {
+    const base = dirname(fileURLToPath(import.meta.url));
     const env = getEnvironment(environment);
 
     return {
         client: 'mysql2',
         asyncStackTraces: env.NODE_ENV === 'development',
         connection: {
-            database: env.MYSQL_DATABASE,
-            host: env.MYSQL_HOST,
-            user: env.MYSQL_USER,
-            password: env.MYSQL_PASSWORD,
+            database: env.KNEX_DATABASE,
+            host: env.KNEX_HOST,
+            user: env.KNEX_USER,
+            password: env.KNEX_PASSWORD,
             dateStrings: true,
             charset: 'utf8mb4',
         },
         pool: {
             min: 0,
-            max: env.MYSQL_CONN_LIMIT,
+            max: env.KNEX_CONN_LIMIT,
         },
         migrations: {
             tableName: 'knex_migrations_dzhura',
-            directory: join(dirname(fileURLToPath(import.meta.url)), '..', 'test', 'migrations'),
-            loadExtensions: ['.mts'],
+            directory: join(base, '..', 'test', 'migrations'),
+            loadExtensions: ['.mts', '.mjs'],
         },
         seeds: {
-            directory: join(dirname(fileURLToPath(import.meta.url)), '..', 'test', 'seeds'),
-            loadExtensions: ['.mts'],
+            directory: join(base, '..', 'test', 'seeds'),
+            loadExtensions: ['.mts', '.mjs'],
         },
     };
 }

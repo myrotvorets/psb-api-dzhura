@@ -1,25 +1,21 @@
 /* eslint-disable import/no-named-as-default-member */
-import express, { type Express } from 'express';
+import { type Express } from 'express';
 import { expect } from 'chai';
 import request from 'supertest';
-import * as knexpkg from 'knex';
 import mockKnex from 'mock-knex';
-import { buildKnexConfig } from '../../../src/knexfile.mjs';
-import { healthChecker, monitoringController } from '../../../src/controllers/monitoring.mjs';
+import { healthChecker } from '../../../src/controllers/monitoring.mjs';
+import { container } from '../../../src/lib/container.mjs';
+import { configureApp, createApp } from '../../../src/server.mjs';
 
 describe('MonitoringController', function () {
     let app: Express;
-    let db: knexpkg.Knex;
 
-    before(function () {
-        app = express();
-        app.disable('x-powered-by');
+    before(async function () {
+        await container.dispose();
+        app = createApp();
+        await configureApp(app);
 
-        const { knex } = knexpkg.default;
-        db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
-        mockKnex.mock(db);
-
-        app.use('/monitoring', monitoringController(db));
+        mockKnex.mock(container.resolve('db'));
     });
 
     beforeEach(function () {
@@ -28,12 +24,13 @@ describe('MonitoringController', function () {
     });
 
     after(function () {
-        mockKnex.unmock(db);
+        mockKnex.unmock(container.resolve('db'));
+        return container.dispose();
     });
 
     afterEach(function () {
-        process.removeAllListeners('SIGTERM');
         mockKnex.getTracker().uninstall();
+        process.removeAllListeners('SIGTERM');
     });
 
     const checker200 = (endpoint: string): Promise<unknown> =>
