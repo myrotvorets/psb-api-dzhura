@@ -1,31 +1,26 @@
 /* eslint-disable import/no-named-as-default-member */
-import express, { type Express } from 'express';
+import { type Express } from 'express';
 import request from 'supertest';
-import * as knexpkg from 'knex';
 import mockKnex from 'mock-knex';
-import { Model } from 'objection';
-import { buildKnexConfig } from '../../../src/knexfile.mjs';
-import { configureApp } from '../../../src/server.mjs';
+import { configureApp, createApp } from '../../../src/server.mjs';
+import { container } from '../../../src/lib/container.mjs';
 import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.mjs';
 import { resultItems } from '../../fixtures/results.mjs';
 
 describe('SearchController', function () {
     let app: Express;
-    let db: knexpkg.Knex;
 
-    before(function () {
-        app = express();
+    before(async function () {
+        await container.dispose();
+        app = createApp();
+        await configureApp(app);
 
-        const { knex } = knexpkg.default;
-        db = knex(buildKnexConfig({ MYSQL_DATABASE: 'fake' }));
-        mockKnex.mock(db);
-        Model.knex(db);
-
-        return configureApp(app);
+        mockKnex.mock(container.resolve('db'));
     });
 
     after(function () {
-        mockKnex.unmock(db);
+        mockKnex.unmock(container.resolve('db'));
+        return container.dispose();
     });
 
     afterEach(function () {

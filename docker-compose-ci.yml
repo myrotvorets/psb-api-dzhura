@@ -13,12 +13,10 @@ services:
       SEED_TABLES: "yes"
       SKIP_REQUEST_LOGGING: "1"
       NO_UPDATE_NOTIFIER: "true"
-      MYSQL_DATABASE: test
-      MYSQL_HOST: mysql
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
-      NPM_CONFIG_LOGLEVEL: silent
-      NPM_CONFIG_LOGS_MAX: "0"
+      KNEX_DATABASE: test
+      KNEX_HOST: mysql
+      KNEX_USER: test
+      KNEX_PASSWORD: test
       HOME: /tmp
     user: node:node
     tmpfs: /tmp
