@@ -19,7 +19,9 @@ services:
       KNEX_PASSWORD: test
       HOME: /tmp
     user: node:node
-    tmpfs: /tmp
+    tmpfs:
+      - /tmp
+      - /usr/src/service/dist
     depends_on:
       - mysql
 
