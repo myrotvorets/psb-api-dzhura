@@ -1,0 +1,64 @@
+extensions:
+  basicauth/server:
+    htpasswd:
+      inline: |
+        otel:otel
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        auth:
+          authenticator: basicauth/server
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+  prometheusremotewrite:
+    endpoint: http://victoriametrics:8428/api/v1/write
+    tls:
+      insecure: true
+
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    default_labels_enabled:
+      exporter: false
+      job: true
+      instance: true
+      level: true
+
+processors:
+  batch:
+
+service:
+  extensions:
+    - basicauth/server
+  pipelines:
+    traces:
+      receivers:
+        - otlp
+      processors:
+        - batch
+      exporters:
+        - otlp
+    metrics:
+      receivers:
+        - otlp
+      processors:
+        - batch
+      exporters:
+        - prometheusremotewrite
+        - prometheus
+    logs:
+      receivers:
+        - otlp
+      processors:
+        - batch
+      exporters:
+        - loki

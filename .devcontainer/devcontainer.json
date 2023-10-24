@@ -1,9 +1,9 @@
 {
     "name": "Dzhura",
     "dockerComposeFile": "docker-compose.yml",
-    "service": "dzhura",
+    "service": "app",
     "workspaceFolder": "/usr/src/service",
-    "forwardPorts": [80, 8080, 9411],
+    "forwardPorts": [80, 8080, 3100],
     "portsAttributes": {
         "80": {
             "label": "Application (Frontend)",
@@ -15,15 +15,13 @@
         },
         "8080": {
             "label": "Adminer",
-            "onAutoForward": "notify"
+            "onAutoForward": "silent"
         },
-        "9411": {
-            "label": "Zipkin",
-            "onAutoForward": "notify"
+        "3100": {
+            "label": "Grafana",
+            "onAutoForward": "silent"
         }
     },
-    "remoteUser": "vscode",
-    "postCreateCommand": "/usr/local/bin/post-create.sh",
     "secrets": {
         "READ_PACKAGES_TOKEN": {
             "description": "Personal access token to install packages from ghcr.io"
@@ -37,22 +35,6 @@
                         "packages": "read"
                     }
                 }
-            }
-        },
-        "vscode": {
-            "extensions": [
-                "dlech.chmod",
-                "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode",
-                "timonwong.shellcheck",
-                "ms-azuretools.vscode-docker",
-                "zhiayang.tabindentspacealign",
-                "42Crunch.vscode-openapi",
-                "natqe.reload",
-                "redhat.vscode-yaml"
-            ],
-            "settings": {
-                "files.autoSave": "onWindowChange"
             }
         }
     }

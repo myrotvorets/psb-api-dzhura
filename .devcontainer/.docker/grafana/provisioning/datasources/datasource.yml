@@ -1,0 +1,37 @@
+apiVersion: 1
+
+datasources:
+  - name: VictoriaMetrics
+    type: prometheus
+    uid: 55HH1PZIk
+    access: proxy
+    url: http://victoriametrics:8428
+    isDefault: true
+
+  - name: Loki
+    type: loki
+    uid: Ci3V6EWSk
+    access: proxy
+    url: http://loki:3100
+    isDefault: false
+
+  - name: Jaeger
+    type: jaeger
+    uid: C_3xksWIz
+    access: proxy
+    url: http://jaeger:16686
+    isDefault: false
+    jsonData:
+      tracesToLogsV2:
+        customQuery: true
+        datasourceUid: Ci3V6EWSk
+        filterBySpanID: false
+        filterByTraceID: false
+        query: "{job=\"psb-api-dzhura\"} | json | spanid = `$${__span.spanId}`"
+        tags: []
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '-1h'
+      nodeGraph:
+        enabled: true
+      spanBar:
+        type: Duration

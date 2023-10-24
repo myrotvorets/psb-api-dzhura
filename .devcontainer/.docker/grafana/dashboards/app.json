@@ -1,0 +1,268 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 1,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "loki",
+                "uid": "Ci3V6EWSk"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 2,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "displayName": "Time",
+                        "desc": true
+                    }
+                ]
+            },
+            "pluginVersion": "10.1.4",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "loki",
+                        "uid": "Ci3V6EWSk"
+                    },
+                    "editorMode": "builder",
+                    "expr": "{job=\"psb-api-dzhura\"}",
+                    "queryType": "range",
+                    "refId": "A"
+                }
+            ],
+            "title": "Logs",
+            "transformations": [
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "json",
+                        "source": "Line"
+                    }
+                },
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "source": "attributes"
+                    }
+                },
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "json",
+                        "source": "resources"
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Line": true,
+                            "attributes": true,
+                            "flags": true,
+                            "host.arch": true,
+                            "host.name": true,
+                            "id": true,
+                            "instrumentation_scope": true,
+                            "labels": true,
+                            "os.type": true,
+                            "process.command": true,
+                            "process.command_args": true,
+                            "process.executable.name": true,
+                            "process.executable.path": true,
+                            "process.owner": true,
+                            "process.pid": true,
+                            "process.runtime.description": true,
+                            "process.runtime.name": true,
+                            "process.runtime.version": true,
+                            "resources": true,
+                            "telemetry.sdk.language": true,
+                            "telemetry.sdk.name": true,
+                            "telemetry.sdk.version": true,
+                            "tsNs": true
+                        },
+                        "indexByName": {
+                            "labels": 0,
+                            "Time": 1,
+                            "severity": 2,
+                            "Line": 3,
+                            "tsNs": 4,
+                            "id": 5,
+                            "ip": 6,
+                            "request": 7,
+                            "body": 8,
+                            "req-id": 9,
+                            "traceid": 10,
+                            "spanid": 11,
+                            "flags": 12,
+                            "resources": 13,
+                            "instrumentation_scope": 14,
+                            "attributes": 15,
+                            "container.id": 16,
+                            "host.arch": 17,
+                            "host.name": 18,
+                            "os.type": 19,
+                            "process.command": 20,
+                            "process.command_args": 21,
+                            "process.executable.name": 22,
+                            "process.executable.path": 23,
+                            "process.owner": 24,
+                            "process.pid": 25,
+                            "process.runtime.description": 26,
+                            "process.runtime.name": 27,
+                            "process.runtime.version": 28,
+                            "service.name": 29,
+                            "service.version": 30,
+                            "telemetry.sdk.language": 31,
+                            "telemetry.sdk.name": 32,
+                            "telemetry.sdk.version": 33
+                        },
+                        "renameByName": {}
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "jaeger",
+                "uid": "C_3xksWIz"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": true,
+                        "inspect": true
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 8
+            },
+            "id": 1,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "10.1.4",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "jaeger",
+                        "uid": "C_3xksWIz"
+                    },
+                    "queryType": "search",
+                    "refId": "A",
+                    "service": "psb-api-dzhura"
+                }
+            ],
+            "title": "Traces",
+            "type": "table"
+        }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-6h",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Dzhura",
+    "uid": "ceb959ce-0014-4598-b861-9a4f0be4c1fe",
+    "version": 3,
+    "weekStart": ""
+}

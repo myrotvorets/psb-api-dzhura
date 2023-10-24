@@ -1,8 +1,10 @@
 services:
-  dzhura:
-    build:
-      context: .docker/dzhura
-      dockerfile: Dockerfile
+  app:
+    image: ghcr.io/myrotvorets/codespaces/psb-api-microservice-node:latest@sha256:8bb0c1afc65ab72cd8564eeb7135d767ae79f31c475170880109a9d0c1481460
+    depends_on:
+      - otel-collector
+      - jaeger
+      - grafana
     environment:
       - NODE_ENV=development
       - NO_UPDATE_NOTIFIER=true
@@ -10,14 +12,17 @@ services:
       - SUPPRESS_SUPPORT=1
       - HTTPS=0
       - PORT=3000
-      - ENABLE_TRACING=1
-      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
-      - HAVE_SWAGGER=true
-      - MYSQL_DATABASE=myrotvorets
-      - MYSQL_USER=myro
-      - MYSQL_PASSWORD=pass
-      - MYSQL_HOST=mariadb
-      - MYSQL_CONN_LIMIT=3
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_EXPORTER_OTLP_HEADERS=Authorization=basic b3RlbDpvdGVs
+      - npm_config_userconfig=/usr/src/service/.npmrc.local
+      - KNEX_DATABASE=myrotvorets
+      - KNEX_USER=myro
+      - KNEX_PASSWORD=pass
+      - KNEX_HOST=mariadb
+      - KNEX_CONN_LIMIT=3
     restart: always
     volumes:
       - "../:/usr/src/service"
@@ -42,12 +47,52 @@ services:
       - ADMINER_DEFAULT_SERVER=mariadb
     restart: always
 
-  zipkin:
-    image: openzipkin/zipkin:latest@sha256:5fd55e6a109233b36d419d7fd2449588d17a6e4da7ed7a3fd0d09c86f1c75a15
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.87.0@sha256:ca198bbb87a552cd9975b08729d838f7bf0b0ce70cbfd06ed80774ccaa8723bd
+    command:
+      - "--config=/etc/otel-collector-config.yaml"
+    depends_on:
+      - victoriametrics
+      - jaeger
+      - loki
+    restart: always
+    volumes:
+      - ./.docker/otel-collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+
+  jaeger:
+    image: ghcr.io/myrotvorets/codespaces/jaeger:latest@sha256:95ce2cc7fa571b160667f122f7ee466988bd11fad964f58129b917bf3fab2206
+    restart: always
+    volumes:
+      - jaegerdata:/badger
+
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.94.0@sha256:4713bac84bdb81128cf8c69a9c623ff0619083d0da564848795514ca268beb02
+    command:
+      - "--storageDataPath=/storage"
+      - "--httpListenAddr=:8428"
+    restart: always
+    volumes:
+      - vmdata:/storage
+
+  loki:
+    image: grafana/loki:2.9.2@sha256:ccbf2ae97fba95f4b2a4f882c05c9b577a985085026dae186444fa3b8b6502ef
+    command:
+      - "-config.file=/etc/loki/local-config.yaml"
     restart: always
 
+  grafana:
+    image: grafana/grafana:10.1.5@sha256:0679e877ba204cede473782d5aba962831a3449092da120aba7d24082efe3fde
+    depends_on:
+      - victoriametrics
+      - loki
+    restart: always
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./.docker/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./.docker/grafana/dashboards/app.json:/var/lib/grafana/dashboards/app.json
+
   swagger:
-    image: swaggerapi/swagger-ui:latest@sha256:c17153d23b81490d9b1d56bb26448b44b2fd43e46e8656ccb6af34eceb291a79
+    image: swaggerapi/swagger-ui:v5.9.0@sha256:384a42c8dd8b5a5e5b02269df10df076848088f06b16e9f9422368900d6d9f80
     environment:
       - SWAGGER_JSON_URL=/specs/dzhura-private.yaml
       - BASE_URL=/swagger
@@ -56,7 +101,9 @@ services:
       - DEFAULT_MODEL_EXPAND_DEPTH=100
       - DEEP_LINKING=true
       - VALIDATOR_URL=none
-    restart: always
 
 volumes:
+  grafanadata:
+  jaegerdata:
   mysql_data:
+  vmdata:
