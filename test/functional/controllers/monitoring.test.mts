@@ -13,7 +13,7 @@ describe('MonitoringController', function () {
     before(async function () {
         await container.dispose();
         app = createApp();
-        await configureApp(app);
+        configureApp(app);
 
         mockKnex.mock(container.resolve('db'));
     });
