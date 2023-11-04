@@ -68,10 +68,6 @@ export function initializeContainer(): typeof container {
     });
 
     container.register('req', asValue(undefined));
-    process.on('beforeExit', () => {
-        container.dispose().catch((e) => console.error(e));
-    });
-
     return container;
 }
 
