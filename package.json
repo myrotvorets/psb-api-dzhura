@@ -62,7 +62,7 @@
     "mocha-multi": "^1.1.7",
     "mocha-reporter-gha": "^1.1.1",
     "mocha-reporter-sonarqube": "^2.0.5",
-    "mock-knex": "^0.4.12",
+    "mock-knex": "^0.4.13",
     "nodemon": "^3.0.2",
     "rimraf": "^5.0.5",
     "supertest": "^6.3.3",
