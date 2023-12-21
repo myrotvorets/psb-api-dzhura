@@ -28,7 +28,7 @@
     "@myrotvorets/express-microservice-middlewares": "^2.2.0",
     "@myrotvorets/express-request-logger": "^1.2.1",
     "@myrotvorets/oav-installer": "^5.0.0",
-    "@myrotvorets/opentelemetry-configurator": "^7.2.0",
+    "@myrotvorets/opentelemetry-configurator": "^7.3.0",
     "@myrotvorets/opentelemetry-plugin-knex": "^0.30.1",
     "@myrotvorets/otel-utils": "^1.1.1",
     "@opentelemetry/api": "^1.7.0",
