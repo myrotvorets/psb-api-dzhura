@@ -30,7 +30,7 @@
     "@myrotvorets/oav-installer": "^5.0.0",
     "@myrotvorets/opentelemetry-configurator": "^7.3.0",
     "@myrotvorets/opentelemetry-plugin-knex": "^0.30.1",
-    "@myrotvorets/otel-utils": "^1.1.1",
+    "@myrotvorets/otel-utils": "^1.1.2",
     "@opentelemetry/api": "^1.7.0",
     "@opentelemetry/core": "^1.19.0",
     "@opentelemetry/semantic-conventions": "^1.19.0",
