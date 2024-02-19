@@ -1,5 +1,6 @@
 import { type NextFunction, type Request, type Response, Router } from 'express';
 import { asyncWrapperMiddleware } from '@myrotvorets/express-async-middleware-wrapper';
+import { ApiError } from '@myrotvorets/express-microservice-middlewares';
 import type { SearchItem } from '../services/searchservice.mjs';
 import { LocalsWithContainer } from '../lib/container.mjs';
 
@@ -22,12 +23,7 @@ async function searchHandler(
     const service = res.locals.container.resolve('searchService');
     const result = await service.search(req.query.s);
     if (result === null) {
-        next({
-            success: false,
-            status: 400,
-            code: 'BAD_SEARCH_TERM',
-            message: 'Both surname and name are required',
-        });
+        next(new ApiError(400, 'BAD_SEARCH_TERM', 'Both surname and name are required'));
     } else {
         res.json({
             success: true,

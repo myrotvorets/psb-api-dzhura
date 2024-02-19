@@ -27,7 +27,7 @@ export function configureApp(app: Express): ReturnType<typeof initializeContaine
                 installOpenApiValidator(join(base, 'specs', 'dzhura-private.yaml'), env.NODE_ENV),
                 searchController(),
                 notFoundMiddleware,
-                errorMiddleware,
+                errorMiddleware(),
             );
             return container;
         } /* c8 ignore start */ catch (e) {
