@@ -5,12 +5,13 @@ import { installOpenApiValidator } from '@myrotvorets/oav-installer';
 import { errorMiddleware, notFoundMiddleware } from '@myrotvorets/express-microservice-middlewares';
 import { createServer, getTracer, recordErrorToSpan } from '@myrotvorets/otel-utils';
 import {
-    LoggerFromRequestFunction,
+    type LoggerFromRequestFunction,
+    errorLoggerHook,
     requestDurationMiddleware,
     requestLoggerMiddleware,
 } from '@myrotvorets/express-otel-middlewares';
 
-import { LocalsWithContainer, initializeContainer, scopedContainerMiddleware } from './lib/container.mjs';
+import { type LocalsWithContainer, initializeContainer, scopedContainerMiddleware } from './lib/container.mjs';
 
 import { searchController } from './controllers/search.mjs';
 import { monitoringController } from './controllers/monitoring.mjs';
@@ -38,7 +39,9 @@ export function configureApp(app: Express): ReturnType<typeof initializeContaine
                 installOpenApiValidator(join(base, 'specs', 'dzhura-private.yaml'), env.NODE_ENV),
                 searchController(),
                 notFoundMiddleware,
-                errorMiddleware(),
+                errorMiddleware({
+                    beforeSendHook: errorLoggerHook(loggerFromRequest),
+                }),
             );
             return container;
         } /* c8 ignore start */ catch (e) {
