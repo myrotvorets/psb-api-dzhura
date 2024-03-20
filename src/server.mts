@@ -1,16 +1,23 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import express, { type Express } from 'express';
+import express, { type Express, type Request, type Response } from 'express';
 import { installOpenApiValidator } from '@myrotvorets/oav-installer';
 import { errorMiddleware, notFoundMiddleware } from '@myrotvorets/express-microservice-middlewares';
 import { createServer, getTracer, recordErrorToSpan } from '@myrotvorets/otel-utils';
+import {
+    LoggerFromRequestFunction,
+    requestDurationMiddleware,
+    requestLoggerMiddleware,
+} from '@myrotvorets/express-otel-middlewares';
 
-import { initializeContainer, scopedContainerMiddleware } from './lib/container.mjs';
-import { requestDurationMiddleware } from './middleware/duration.mjs';
-import { loggerMiddleware } from './middleware/logger.mjs';
+import { LocalsWithContainer, initializeContainer, scopedContainerMiddleware } from './lib/container.mjs';
 
 import { searchController } from './controllers/search.mjs';
 import { monitoringController } from './controllers/monitoring.mjs';
+import { requestDurationHistogram } from './lib/metrics.mjs';
+
+const loggerFromRequest: LoggerFromRequestFunction = (req: Request) =>
+    (req.res as Response<never, LocalsWithContainer> | undefined)?.locals.container.resolve('logger');
 
 export function configureApp(app: Express): ReturnType<typeof initializeContainer> {
     return getTracer().startActiveSpan('configureApp', (span): ReturnType<typeof initializeContainer> => {
@@ -20,7 +27,11 @@ export function configureApp(app: Express): ReturnType<typeof initializeContaine
             const base = dirname(fileURLToPath(import.meta.url));
             const db = container.resolve('db');
 
-            app.use(requestDurationMiddleware, scopedContainerMiddleware, loggerMiddleware);
+            app.use(
+                requestDurationMiddleware(requestDurationHistogram),
+                scopedContainerMiddleware,
+                requestLoggerMiddleware('dzhura', loggerFromRequest),
+            );
             app.use('/monitoring', monitoringController(db));
 
             app.use(
