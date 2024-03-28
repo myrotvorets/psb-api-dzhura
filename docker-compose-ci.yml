@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   dzhura:
-    image: node:lts-alpine@sha256:d3b98e8fa68c49e9c347a8d91ce38937b7ecf1a9c57e51875e4f3735312a6013
+    image: node:lts-alpine@sha256:ef3f47741e161900ddd07addcaca7e76534a9205e4cd73b2ed091ba339004a75
     read_only: true
     volumes:
       - ".:/usr/src/service"
