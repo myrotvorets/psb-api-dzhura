@@ -63,7 +63,7 @@
     "mocha-reporter-sonarqube": "^2.0.6",
     "mock-knex": "^0.4.13",
     "nodemon": "^3.1.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.6",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
