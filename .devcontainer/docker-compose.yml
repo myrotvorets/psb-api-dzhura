@@ -29,7 +29,7 @@ services:
     working_dir: /usr/src/service
 
   mariadb:
-    image: mariadb:11@sha256:f4f48c282ff04cc87efcb6cf7cb0328bc332048b298e946fd8e2f53be4170894
+    image: mariadb:11@sha256:a891b59da43875e5fa2e260da7901b10c5e01e63e26cc33981ffdd9ab2c50d3b
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_ROOT_HOST=%
