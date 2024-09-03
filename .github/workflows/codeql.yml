@@ -9,6 +9,10 @@ on:
       - master
   schedule:
     - cron: "27 8 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   analyze:
@@ -38,8 +42,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-        with:
-          submodules: recursive
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
