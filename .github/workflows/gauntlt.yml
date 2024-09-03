@@ -35,5 +35,3 @@ jobs:
 
       - name: Run gauntlt scan
         run: docker compose -f docker-compose-ci.yml up --build --abort-on-container-exit --renew-anon-volumes
-        env:
-          GPR_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
