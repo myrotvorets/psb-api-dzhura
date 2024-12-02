@@ -57,7 +57,7 @@
     "cross-env": "^7.0.3",
     "eslint-formatter-gha": "^1.5.2",
     "eslint-plugin-mocha": "^10.5.0",
-    "mocha": "^10.8.2",
+    "mocha": "^11.0.1",
     "mocha-multi": "^1.1.7",
     "mocha-reporter-gha": "^1.1.1",
     "mocha-reporter-sonarqube": "^2.1.1",
