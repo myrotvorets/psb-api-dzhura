@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 import { type Express } from 'express';
 import request from 'supertest';
 import mockKnex from 'mock-knex';

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable sonarjs/assertions-in-tests */
-/* eslint-disable import/no-named-as-default-member */
 import { expect } from 'chai';
 import mockKnex from 'mock-knex';
 import { container, initializeContainer } from '../../../src/lib/container.mjs';
