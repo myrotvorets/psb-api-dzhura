@@ -1,4 +1,4 @@
-import { type Express } from 'express';
+import type { RequestListener } from 'node:http';
 import request from 'supertest';
 import mockKnex from 'mock-knex';
 import { configureApp, createApp } from '../../../src/server.mjs';
@@ -7,12 +7,13 @@ import { attachmentResponse, criminalResponse } from '../../fixtures/queryrespon
 import { resultItems } from '../../fixtures/results.mjs';
 
 describe('SearchController', function () {
-    let app: Express;
+    let app: RequestListener;
 
     before(async function () {
         await container.dispose();
-        app = createApp();
-        configureApp(app);
+        const application = createApp();
+        configureApp(application);
+        app = application as RequestListener;
 
         mockKnex.mock(container.resolve('db'));
     });
