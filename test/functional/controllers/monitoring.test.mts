@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/assertions-in-tests */
-import { type Express } from 'express';
+import type { RequestListener } from 'node:http';
 import { expect } from 'chai';
 import request from 'supertest';
 import mockKnex from 'mock-knex';
@@ -8,12 +8,13 @@ import { container } from '../../../src/lib/container.mjs';
 import { configureApp, createApp } from '../../../src/server.mjs';
 
 describe('MonitoringController', function () {
-    let app: Express;
+    let app: RequestListener;
 
     before(async function () {
         await container.dispose();
-        app = createApp();
-        configureApp(app);
+        const application = createApp();
+        configureApp(application);
+        app = application as RequestListener;
 
         mockKnex.mock(container.resolve('db'));
     });
