@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "@myrotvorets/eslint-config-myrotvorets-ts": "^3.0.2",
-    "@types/chai": "^5.0.1",
-    "@types/chai-as-promised": "^8.0.1",
+    "@types/chai": "^5.2.0",
+    "@types/chai-as-promised": "^8.0.2",
     "@types/express": "^5.0.0",
     "@types/mocha": "^10.0.10",
     "@types/mock-knex": "^0.4.8",
