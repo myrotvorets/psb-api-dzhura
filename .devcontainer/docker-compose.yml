@@ -66,7 +66,7 @@ services:
       - jaegerdata:/badger
 
   victoriametrics:
-    image: victoriametrics/victoria-metrics:v1.112.0@sha256:98363e91a586c6cf095833bbb284eddc303d606aa018d6757a74e35a4a4e9afb
+    image: victoriametrics/victoria-metrics:v1.114.0@sha256:227ad53fd57a4b4430624898a1be0cac39431e1235fa0dc92f567cce38969344
     command:
       - "--storageDataPath=/storage"
       - "--httpListenAddr=:8428"
