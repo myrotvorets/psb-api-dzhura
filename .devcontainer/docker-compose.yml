@@ -92,7 +92,7 @@ services:
       - ./.docker/grafana/dashboards/app.json:/var/lib/grafana/dashboards/app.json
 
   swagger:
-    image: swaggerapi/swagger-ui:v5.19.0@sha256:2e87e87186c9b1737fc745e467bca3fa3dd307f52b3e73494b2417b381e62923
+    image: swaggerapi/swagger-ui:v5.25.3@sha256:77f03599e686f6411258bce4081cc32fd981eff6c332f0db1aaeae859e08a1f1
     environment:
       - SWAGGER_JSON_URL=/specs/dzhura-private.yaml
       - BASE_URL=/swagger
