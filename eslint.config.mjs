@@ -7,5 +7,10 @@ export default [
         ignores: ['coverage/**', 'dist/**', '**/*.cjs', '**/*.mjs', '**/*.js'],
     },
     ...MyrotvoretsConfig,
-    MochaPlugin.configs.flat.recommended,
+    MochaPlugin.configs.recommended,
+    {
+        rules: {
+            'mocha/consistent-spacing-between-blocks': 'off',
+        }
+    }
 ];
