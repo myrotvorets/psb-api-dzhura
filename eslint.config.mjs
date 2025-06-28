@@ -8,4 +8,9 @@ export default [
     },
     ...MyrotvoretsConfig,
     MochaPlugin.configs.recommended,
+    {
+        rules: {
+            'mocha/consistent-spacing-between-blocks': 'off',
+        }
+    }
 ];
