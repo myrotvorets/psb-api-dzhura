@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/assertions-in-tests */
 import type { RequestListener } from 'node:http';
 import { expect } from 'chai';
 import request from 'supertest';
