@@ -7,5 +7,5 @@ export default [
         ignores: ['coverage/**', 'dist/**', '**/*.cjs', '**/*.mjs', '**/*.js'],
     },
     ...MyrotvoretsConfig,
-    MochaPlugin.configs.flat.recommended,
+    MochaPlugin.configs.recommended,
 ];
