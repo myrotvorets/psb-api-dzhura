@@ -55,7 +55,7 @@
     "chai-as-promised": "npm:@rvagg/chai-as-promised@^8.0.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "eslint-formatter-gha": "^1.5.2",
+    "eslint-formatter-gha": "^1.6.0",
     "eslint-plugin-mocha": "^11.1.0",
     "mocha": "^11.1.0",
     "mocha-multi": "^1.1.7",
