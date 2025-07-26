@@ -14,7 +14,6 @@ import {
 import { type LocalsWithContainer, initializeContainer, scopedContainerMiddleware } from './lib/container.mjs';
 
 import { searchController } from './controllers/search.mjs';
-import { monitoringController } from './controllers/monitoring.mjs';
 import { requestDurationHistogram } from './lib/metrics.mjs';
 
 const loggerFromRequest: LoggerFromRequestFunction = (req: Request) =>
@@ -26,16 +25,11 @@ export function configureApp(app: Express): ReturnType<typeof initializeContaine
             const container = initializeContainer();
             const env = container.resolve('environment');
             const base = dirname(fileURLToPath(import.meta.url));
-            const db = container.resolve('db');
 
             app.use(
                 requestDurationMiddleware(requestDurationHistogram),
                 scopedContainerMiddleware,
                 requestLoggerMiddleware('dzhura', loggerFromRequest),
-            );
-            app.use('/monitoring', monitoringController(db));
-
-            app.use(
                 installOpenApiValidator(join(base, 'specs', 'dzhura-private.yaml'), env.NODE_ENV),
                 searchController(),
                 notFoundMiddleware,
@@ -43,6 +37,7 @@ export function configureApp(app: Express): ReturnType<typeof initializeContaine
                     beforeSendHook: errorLoggerHook(loggerFromRequest),
                 }),
             );
+
             return container;
         } /* c8 ignore start */ catch (e) {
             recordErrorToSpan(e, span);
