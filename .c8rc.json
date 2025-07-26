@@ -1,5 +1,4 @@
 {
-    "extension": [".mjs"],
-    "exclude": ["src/**", "dist/test/**", "mocha.setup.mjs"],
+    "extension": [".mts"],
     "reporter": ["text", "lcov"]
 }
