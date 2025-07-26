@@ -104,10 +104,7 @@ export class SearchService implements SearchServiceInterface {
 
     protected static getThumbnails(atts: readonly CriminalAttachment[]): Record<number, string> {
         return atts.reduce<Record<number, string>>((result, { id, path }) => {
-            if (result[id] === undefined) {
-                result[id] = path.replace(/(\.[a-z]+)$/u, '-150x150$1');
-            }
-
+            result[id] ??= path.replace(/(\.[a-z]+)$/u, '-150x150$1');
             return result;
         }, {});
     }

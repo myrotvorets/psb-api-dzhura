@@ -65,6 +65,7 @@ describe('SearchController', function () {
 
         // eslint-disable-next-line mocha/no-setup-in-describe
         (['post', 'put', 'head', 'delete', 'patch', 'options'] as const).forEach((method) =>
+            // eslint-disable-next-line sonarjs/assertions-in-tests
             it(`should return a 405 on disallowed methods ('${method}')`, function () {
                 return request(app)[method]('/search').expect(405);
             }),
