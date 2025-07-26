@@ -1,5 +1,4 @@
 import { type NextFunction, type Request, type Response, Router } from 'express';
-import { asyncWrapperMiddleware } from '@myrotvorets/express-async-middleware-wrapper';
 import { ApiError } from '@myrotvorets/express-microservice-middlewares';
 import type { SearchItem } from '../services/searchservice.mjs';
 import { LocalsWithContainer } from '../lib/container.mjs';
@@ -34,6 +33,6 @@ async function searchHandler(
 
 export function searchController(): Router {
     const router = Router();
-    router.get('/search', asyncWrapperMiddleware(searchHandler));
+    router.get('/search', searchHandler);
     return router;
 }

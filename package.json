@@ -24,7 +24,6 @@
   "license": "MIT",
   "dependencies": {
     "@cloudnative/health-connect": "^2.1.0",
-    "@myrotvorets/express-async-middleware-wrapper": "^2.2.3",
     "@myrotvorets/express-microservice-middlewares": "^3.1.2",
     "@myrotvorets/express-otel-middlewares": "^2.0.0",
     "@myrotvorets/express-request-logger": "^1.2.3",
