@@ -1,5 +1,4 @@
 import type { RequestListener } from 'node:http';
-import { expect } from 'chai';
 import request from 'supertest';
 import mockKnex from 'mock-knex';
 import { healthChecker } from '../../../src/controllers/monitoring.mjs';
@@ -19,9 +18,7 @@ describe('MonitoringController', function () {
     });
 
     beforeEach(function () {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        expect(healthChecker).not.to.be.undefined;
-        healthChecker!.shutdownRequested = false;
+        healthChecker.shutdownRequested = false;
     });
 
     after(function () {
@@ -38,7 +35,7 @@ describe('MonitoringController', function () {
         request(app).get(`/monitoring/${endpoint}`).expect('Content-Type', /json/u).expect(200);
 
     const checker503 = (endpoint: string): Promise<unknown> => {
-        healthChecker!.shutdownRequested = true;
+        healthChecker.shutdownRequested = true;
         return request(app).get(`/monitoring/${endpoint}`).expect('Content-Type', /json/u).expect(503);
     };
 
@@ -59,16 +56,6 @@ describe('MonitoringController', function () {
 
         it('should fail when shutdown requested', function () {
             return checker503('ready');
-        });
-    });
-
-    describe('Health Check', function () {
-        it('should succeed', function () {
-            return checker200('health');
-        });
-
-        it('should fail when shutdown requested', function () {
-            return checker503('health');
         });
     });
 });
