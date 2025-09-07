@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import mockKnex from 'mock-knex';
 import { container, initializeContainer } from '../../../src/lib/container.mjs';
 import { SearchService } from '../../../src/services/searchservice.mjs';
-import { SearchServiceInterface } from '../../../src/services/searchserviceinterface.mjs';
-import { CriminalAttachment } from '../../../src/models/criminalattachment.mjs';
+import { type SearchServiceInterface } from '../../../src/services/searchserviceinterface.mjs';
+import { type CriminalAttachment } from '../../../src/models/criminalattachment.mjs';
 import { attachmentResponse, criminalResponse } from '../../fixtures/queryresponses.mjs';
 import { resultItems } from '../../fixtures/results.mjs';
 
