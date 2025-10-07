@@ -42,13 +42,13 @@ services:
       - ./.docker/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   adminer:
-    image: adminer:latest@sha256:3af794aede16163e72832eee3dcaf3ca87961a7d120b1a3534ff5891c5c16329
+    image: adminer:latest@sha256:a3bea217657c5fbe995695a3c582e7860491b9bab90c827f12c03436f07b7c37
     environment:
       - ADMINER_DEFAULT_SERVER=mariadb
     restart: always
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.135.0@sha256:89107a3a8f4636a396927edf7025bb9614b8da2d92f4cc3f43109e8d115736e2
+    image: otel/opentelemetry-collector-contrib:0.136.0@sha256:45392d534c1edcc809c2d112394029246bc679d2ae5ea7081414a1fc74f2c621
     command:
       - "--config=/etc/otel-collector-config.yaml"
     depends_on:
@@ -66,7 +66,7 @@ services:
       - jaegerdata:/badger
 
   victoriametrics:
-    image: victoriametrics/victoria-metrics:v1.125.1@sha256:c49f21c0ebbd89a6ea6f7d2b7e93e5793212e9698f367de7512671294d6dbf0c
+    image: victoriametrics/victoria-metrics:v1.127.0@sha256:d6b6fed9b6d69741d0ac59baaafa5bb7f4ce0ee76f8cd78181f44c72b452d240
     command:
       - "--storageDataPath=/storage"
       - "--httpListenAddr=:8428"
@@ -81,7 +81,7 @@ services:
     restart: always
 
   grafana:
-    image: grafana/grafana:12.1.1@sha256:a1701c2180249361737a99a01bc770db39381640e4d631825d38ff4535efa47d
+    image: grafana/grafana:12.2.0@sha256:74144189b38447facf737dfd0f3906e42e0776212bf575dc3334c3609183adf7
     depends_on:
       - victoriametrics
       - loki
