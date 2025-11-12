@@ -30,7 +30,7 @@
     "@myrotvorets/otel-utils": "^2.0.0",
     "@opentelemetry/api": "^1.9.0",
     "awilix": "^12.0.5",
-    "envalid": "^8.1.0",
+    "envalid": "^8.1.1",
     "express": "^5.1.0",
     "express-openapi-validator": "^5.6.0",
     "knex": "^3.1.0",
